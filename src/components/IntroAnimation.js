@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Animated,
-  Easing,
-  SafeAreaView,
-} from 'react-native';
+
 import LottieView from 'lottie-react-native';
 
-const Splash = () => {
+const IntroAnimation = () => {
   return (
     <>
       <LottieView
@@ -25,4 +19,4 @@ const Splash = () => {
   );
 };
 
-export default Splash;
+export default IntroAnimation;

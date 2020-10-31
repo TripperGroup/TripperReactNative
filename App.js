@@ -18,9 +18,8 @@ import AuthNavigations from './src/navigation/AuthNavigations';
 import axios from 'react-native-axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import Splash from './src/screens/Splash';
-
 export const AuthContext = createContext();
+export const StateContext = createContext();
 
 const theme = {
   ...DefaultTheme,
@@ -40,11 +39,26 @@ const App = ({ navigation }) => {
             ...prevState,
             userToken: action.token,
             isLoading: false,
+            faild: false,
+          };
+        case 'REQUESTED':
+          return {
+            ...prevState,
+            loadingIndicator: true,
+            faild: false,
+          };
+        case 'FAILD':
+          return {
+            ...prevState,
+            loadingIndicator: false,
+            faild: true,
           };
         case 'SIGN_IN':
           return {
             ...prevState,
+            loadingIndicator: false,
             isSignout: false,
+            faild: false,
             userToken: action.token,
           };
         case 'SIGN_OUT':
@@ -52,6 +66,8 @@ const App = ({ navigation }) => {
             ...prevState,
             isSignout: true,
             userToken: null,
+            loadingIndicator: false,
+            faild: false,
           };
       }
     },
@@ -59,6 +75,8 @@ const App = ({ navigation }) => {
       isLoading: true,
       isSignout: false,
       userToken: null,
+      loadingIndicator: false,
+      faild: false,
     },
   );
 
@@ -83,6 +101,7 @@ const App = ({ navigation }) => {
 
   const authContext = useMemo(
     () => ({
+      requesting: () => dispatch({ type: 'REQUESTED' }),
       signIn: async (username, password) => {
         axios
           .post(
@@ -98,7 +117,10 @@ const App = ({ navigation }) => {
             AsyncStorage.setItem('token', token);
             dispatch({ type: 'SIGN_IN', token: token });
           })
-          .catch((error) => console.log(error));
+          .catch(
+            (error) => console.log(error),
+            dispatch({ type: 'FAILD' }),
+          );
       },
       signOut: async () => {
         let token = await AsyncStorage.getItem('token');
@@ -127,15 +149,17 @@ const App = ({ navigation }) => {
   );
   return (
     <AuthContext.Provider value={authContext}>
-      <PaperProvider theme={theme}>
-        <NavigationContainer>
-          {state.userToken == null ? (
-            <AuthNavigations />
-          ) : (
-            <BottomTabNavigator />
-          )}
-        </NavigationContainer>
-      </PaperProvider>
+      <StateContext.Provider value={state}>
+        <PaperProvider theme={theme}>
+          <NavigationContainer>
+            {state.userToken == null ? (
+              <AuthNavigations />
+            ) : (
+              <BottomTabNavigator />
+            )}
+          </NavigationContainer>
+        </PaperProvider>
+      </StateContext.Provider>
     </AuthContext.Provider>
   );
 };

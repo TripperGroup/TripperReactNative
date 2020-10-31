@@ -3,12 +3,10 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { useTheme, Portal, FAB } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 
-import Shop from '../screens/Shop';
-import Profile from '../screens/Profile';
-import Wiki from '../screens/Wiki';
-import Booking from '../screens/Booking';
-
-import { TripStack } from './StackNavigations';
+import TripStack from './TripStack';
+import WikiStack from './WikiStack';
+import ShopStack from './ShopStack';
+import ProfileStack from './ProfileStack';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -43,21 +41,21 @@ const BottomTabNavigator = () => {
         /> */}
         <Tab.Screen
           name="Wiki"
-          component={Wiki}
+          component={WikiStack}
           options={{
             tabBarIcon: 'book-open-variant',
           }}
         />
         <Tab.Screen
           name="Shop"
-          component={Shop}
+          component={ShopStack}
           options={{
             tabBarIcon: 'basket',
           }}
         />
         <Tab.Screen
           name="Profile"
-          component={Profile}
+          component={ProfileStack}
           options={{
             tabBarIcon: 'account-outline',
           }}

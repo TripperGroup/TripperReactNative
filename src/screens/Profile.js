@@ -8,12 +8,6 @@ export default function Profile() {
 
   return (
     <View>
-      <Appbar.Header>
-        <Appbar.BackAction />
-        <Appbar.Content title="Title" subtitle="Subtitle" />
-        <Appbar.Action icon="magnify" />
-        <Appbar.Action icon="dots-vertical" />
-      </Appbar.Header>
       <Button title="Sign Out" onPress={signOut} />
     </View>
   );

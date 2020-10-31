@@ -13,13 +13,15 @@ import { TextInput, Button } from 'react-native-paper';
 import Logo from '../components/IntroLogo';
 import { emailValidator, passwordValidator } from '../core/utils';
 import { AuthContext } from '../../App';
+import { StateContext } from '../../App';
 
-const SignIn = ({ navigation }, props) => {
+const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-  const { signIn } = useContext(AuthContext);
+  const { signIn, requesting } = useContext(AuthContext);
+  const { loadingIndicator, faild } = useContext(StateContext);
 
   return (
     <ScrollView
@@ -63,19 +65,27 @@ const SignIn = ({ navigation }, props) => {
       />
 
       <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ForgotPassword')}
-        >
-          <Text style={styles.label}>Forgot your password?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('')}>
+          <Text
+            style={{
+              marginTop: 10,
+              fontWeight: faild ? '500' : '200',
+            }}
+          >
+            Forgot your password?
+          </Text>
         </TouchableOpacity>
       </View>
 
       <Button
         dark
+        loading={loadingIndicator}
         mode="contained"
-        onPress={() => signIn(userName, password)}
+        onPress={() => {
+          requesting(), signIn(userName, password);
+        }}
       >
-        Login
+        {faild ? 'TRY AGAIN' : 'LOGIN'}
       </Button>
 
       <View style={styles.row}>
@@ -116,7 +126,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   label: {
-    marginTop: 6,
+    marginTop: 12,
   },
 });
 

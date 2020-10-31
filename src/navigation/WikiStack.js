@@ -4,13 +4,7 @@ import { Appbar, Avatar, Text, Button } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Shop from '../screens/Shop';
-import Trips from '../screens/Trips';
-import Profile from '../screens/Profile';
 import Wiki from '../screens/Wiki';
-import Booking from '../screens/Booking';
-import Test from '../screens/test';
-import Map from '../screens/Map';
 
 import SearchHeader from 'react-native-search-header';
 
@@ -38,14 +32,19 @@ export const Header = ({ scene, previous, navigation }) => {
           <Appbar.BackAction onPress={navigation.goBack} />
         ) : (
           <Appbar.Action
-            icon="map-search-outline"
+            icon="shape"
             onPress={() => {
               navigation.navigate('Map');
             }}
             style={{ opacity: 0.7 }}
           />
         )}
-        <Appbar.Content title={title} />
+        <Appbar.Content
+          style={{
+            marginRight: 8,
+          }}
+          title={title}
+        />
         <Appbar.Action
           icon="magnify"
           onPress={() => searchHeaderRef.current.show()}
@@ -95,7 +94,7 @@ export const Header = ({ scene, previous, navigation }) => {
   );
 };
 
-export const TripStack = () => {
+export default WikiStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="Trips"
@@ -111,19 +110,9 @@ export const TripStack = () => {
       }}
     >
       <Stack.Screen
-        name="Trips"
-        component={Trips}
-        options={{ headerTitle: 'Trips' }}
-      />
-      <Stack.Screen
-        name="Map"
-        component={Map}
-        options={{ headerTitle: 'Map' }}
-      />
-      <Stack.Screen
-        name="Test"
-        component={Test}
-        options={{ headerTitle: 'test' }}
+        name="Wiki"
+        component={Wiki}
+        options={{ headerTitle: 'Wiki' }}
       />
     </Stack.Navigator>
   );

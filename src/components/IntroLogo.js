@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 
 const Logo = () => (
