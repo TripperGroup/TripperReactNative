@@ -20,7 +20,7 @@ const SignIn = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-  const { signIn, requesting } = useContext(AuthContext);
+  const { signIn, guestLogin } = useContext(AuthContext);
   const { loadingIndicator, faild } = useContext(StateContext);
 
   return (
@@ -94,6 +94,10 @@ const SignIn = ({ navigation }) => {
           onPress={() => navigation.navigate('SignUp')}
         >
           <Text style={styles.link}>Sign up</Text>
+        </TouchableOpacity>
+        <Text> Or </Text>
+        <TouchableOpacity onPress={() => guestLogin()}>
+          <Text style={styles.link}>Guest Login</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

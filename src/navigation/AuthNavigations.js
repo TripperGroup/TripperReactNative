@@ -6,7 +6,7 @@ import {
 } from 'react-native-paper';
 
 import SignIn from '../screens/SignIn';
-import SignUp from '../screens/signUp';
+import SignUp from '../screens/SignUp';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const theme = {

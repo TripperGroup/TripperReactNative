@@ -15,7 +15,6 @@ import {
   Provider as PaperProvider,
   DarkTheme,
 } from 'react-native-paper';
-import { createStackNavigator } from '@react-navigation/stack';
 
 import { NavigationContainer } from '@react-navigation/native';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
@@ -77,6 +76,22 @@ const App = ({ navigation }) => {
             loadingIndicator: false,
             faild: false,
           };
+        case 'GUEST':
+          return {
+            ...prevState,
+            userToken: null,
+            loadingIndicator: false,
+            faild: false,
+            isGuest: true,
+          };
+        case 'NOTGUEST':
+          return {
+            ...prevState,
+            userToken: null,
+            loadingIndicator: false,
+            faild: false,
+            isGuest: false,
+          };
       }
     },
     {
@@ -85,6 +100,7 @@ const App = ({ navigation }) => {
       userToken: null,
       loadingIndicator: false,
       faild: false,
+      isGuest: false,
     },
   );
 
@@ -109,6 +125,8 @@ const App = ({ navigation }) => {
 
   const authContext = useMemo(
     () => ({
+      guestLogin: () => dispatch({ type: 'GUEST' }),
+      guestToSignUp: () => dispatch({ type: 'NOTGUEST' }),
       requesting: () => dispatch({ type: 'REQUESTED' }),
       signIn: async (username, password) => {
         axios
@@ -174,7 +192,7 @@ const App = ({ navigation }) => {
         <StateContext.Provider value={state}>
           <PaperProvider theme={theme}>
             <NavigationContainer>
-              {state.userToken == null ? (
+              {state.userToken == null && !state.isGuest ? (
                 <AuthNavigations />
               ) : (
                 <BottomTabNavigator />

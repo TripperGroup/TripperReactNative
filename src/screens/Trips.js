@@ -10,9 +10,7 @@ const Trips = ({ navigation }) => {
       <ScrollView>
         <TripCard />
         <TripCard />
-
         <TripCard />
-
         <TripCard />
       </ScrollView>
     </>
