@@ -1,7 +1,6 @@
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { ContactStackNavigator } from './StackNavigators';
 import BottomTabNavigator from './BottomTabNavigator';
 import DrawerContent from '../components/DrawerContent';
 

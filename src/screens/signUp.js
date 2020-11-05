@@ -19,22 +19,10 @@ import { AuthContext } from '../../App';
 const SignUp = ({ navigation }) => {
   const { signUp } = useContext(AuthContext);
 
-  const [name, setName] = useState({ value: '', error: '' });
-  const [email, setEmail] = useState({ value: '', error: '' });
-  const [password, setPassword] = useState({ value: '', error: '' });
-
-  const _onSignUpPressed = () => {
-    const nameError = nameValidator(name.value);
-    const emailError = emailValidator(email.value);
-    const passwordError = passwordValidator(password.value);
-
-    if (emailError || passwordError || nameError) {
-      setName({ ...name, error: nameError });
-      setEmail({ ...email, error: emailError });
-      setPassword({ ...password, error: passwordError });
-      return;
-    }
-  };
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
 
   return (
     <ScrollView
@@ -56,7 +44,7 @@ const SignUp = ({ navigation }) => {
         label="Name"
         returnKeyType="next"
         value={name.value}
-        onChangeText={(text) => setName({ value: text, error: '' })}
+        onChangeText={setName}
         error={!!name.error}
         errorText={name.error}
         styles={styles.input}
@@ -68,7 +56,7 @@ const SignUp = ({ navigation }) => {
         label="Email"
         returnKeyType="next"
         value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
+        onChangeText={setEmail}
         error={!!email.error}
         errorText={email.error}
         autoCapitalize="none"
@@ -84,9 +72,19 @@ const SignUp = ({ navigation }) => {
         label="Password"
         returnKeyType="done"
         value={password.value}
-        onChangeText={(text) =>
-          setPassword({ value: text, error: '' })
-        }
+        onChangeText={setPassword}
+        error={!!password.error}
+        errorText={password.error}
+        secureTextEntry
+        styles={styles.input}
+      />
+      <TextInput
+        style={styles.input}
+        mode="outlined"
+        label="Re enter password"
+        returnKeyType="done"
+        value={password.value}
+        onChangeText={setPassword2}
         error={!!password.error}
         errorText={password.error}
         secureTextEntry
@@ -96,7 +94,7 @@ const SignUp = ({ navigation }) => {
       <Button
         dark
         mode="contained"
-        onPress={_onSignUpPressed}
+        onPress={() => signUp(name, email, password, password2)}
         style={styles.button}
       >
         Sign Up

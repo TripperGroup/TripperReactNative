@@ -6,6 +6,11 @@ import React, {
 } from 'react';
 
 import {
+  ActivityIndicator,
+  View,
+  ImageBackground,
+} from 'react-native';
+import {
   DefaultTheme,
   Provider as PaperProvider,
   DarkTheme,
@@ -17,6 +22,9 @@ import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import AuthNavigations from './src/navigation/AuthNavigations';
 import axios from 'react-native-axios';
 import AsyncStorage from '@react-native-community/async-storage';
+
+import IntroLogo from './src/components/IntroLogo';
+import SplashBackground from './assets/splashImage.jpg';
 
 export const AuthContext = createContext();
 export const StateContext = createContext();
@@ -104,16 +112,12 @@ const App = ({ navigation }) => {
       requesting: () => dispatch({ type: 'REQUESTED' }),
       signIn: async (username, password) => {
         axios
-          .post(
-            'http://127.0.0.1:8001/api/auth/login/',
-            {
-              username,
-              password,
-            },
-            200,
-          )
+          .post('http://127.0.0.1:8001/api/auth/token/login/', {
+            username,
+            password,
+          })
           .then((response) => {
-            let token = response.data.token;
+            let token = response.data.auth_token;
             AsyncStorage.setItem('token', token);
             dispatch({ type: 'SIGN_IN', token: token });
           })
@@ -121,47 +125,91 @@ const App = ({ navigation }) => {
             (error) => console.log(error),
             dispatch({ type: 'FAILD' }),
           );
+        //await AsyncStorage.setItem('token', token);
       },
       signOut: async () => {
         let token = await AsyncStorage.getItem('token');
+        console.log(token);
         axios
-          .get('http://127.0.0.1:8001/api/auth/logout/', {
-            headers: {
-              Authorization: `Token ${token}`,
+          .post(
+            'http://127.0.0.1:8001/api/auth/token/logout/',
+            {},
+            {
+              headers: {
+                Authorization: `Token ${token}`,
+              },
             },
+          )
+          .then((res) => {
+            console.log(res.data);
+            AsyncStorage.removeItem('token');
+            dispatch({ type: 'SIGN_OUT' });
+          })
+          .catch(
+            (error) => console.log(error),
+            AsyncStorage.removeItem('token'),
+            dispatch({ type: 'SIGN_OUT' }),
+          );
+      },
+      signUp: async (name, email, password, password2) => {
+        axios
+          .post('http://127.0.0.1:8001/api/auth/users/', {
+            username: name,
+            email: email,
+            password: password,
+            re_password: password2,
           })
           .then((res) => {
             console.log(res.data);
           })
           .catch((error) => console.log(error));
-        dispatch({ type: 'SIGN_OUT' });
-      },
-      signUp: async (data) => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
       },
     }),
     [],
   );
-  return (
-    <AuthContext.Provider value={authContext}>
-      <StateContext.Provider value={state}>
-        <PaperProvider theme={theme}>
-          <NavigationContainer>
-            {state.userToken == null ? (
-              <AuthNavigations />
-            ) : (
-              <BottomTabNavigator />
-            )}
-          </NavigationContainer>
-        </PaperProvider>
-      </StateContext.Provider>
-    </AuthContext.Provider>
-  );
+
+  if (!state.isLoading) {
+    return (
+      <AuthContext.Provider value={authContext}>
+        <StateContext.Provider value={state}>
+          <PaperProvider theme={theme}>
+            <NavigationContainer>
+              {state.userToken == null ? (
+                <AuthNavigations />
+              ) : (
+                <BottomTabNavigator />
+              )}
+            </NavigationContainer>
+          </PaperProvider>
+        </StateContext.Provider>
+      </AuthContext.Provider>
+    );
+  } else {
+    return (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+        }}
+      >
+        <ImageBackground
+          source={SplashBackground}
+          style={{
+            flex: 1,
+            resizeMode: 'cover',
+            justifyContent: 'center',
+          }}
+          imageStyle={{ opacity: 1 }}
+        >
+          <IntroLogo />
+          <ActivityIndicator
+            color="white"
+            style={{ marginTop: 15 }}
+          />
+        </ImageBackground>
+      </View>
+    );
+  }
 };
 
 export default App;

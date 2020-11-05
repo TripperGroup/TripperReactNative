@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, Dimensions } from 'react-native';
-import { Appbar, Avatar, Text, Button } from 'react-native-paper';
+import { TouchableOpacity, Dimensions, View } from 'react-native';
+import {
+  Appbar,
+  Avatar,
+  Text,
+  Button,
+  Portal,
+  Modal,
+  Provider,
+} from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Trips from '../screens/Trips';
-
-import Map from '../screens/Map';
+import Shop from '../screens/Shop';
 
 import SearchHeader from 'react-native-search-header';
 
@@ -34,10 +40,7 @@ export const Header = ({ scene, previous, navigation }) => {
           <Appbar.BackAction onPress={navigation.goBack} />
         ) : (
           <Appbar.Action
-            icon="map-search-outline"
-            onPress={() => {
-              navigation.navigate('Map');
-            }}
+            icon="shopping-outline"
             style={{ opacity: 0.7 }}
           />
         )}
@@ -99,7 +102,7 @@ export const Header = ({ scene, previous, navigation }) => {
 export default ShopStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Trips"
+      initialRouteName="Shop"
       headerMode="screen"
       screenOptions={{
         header: ({ scene, previous, navigation }) => (
@@ -112,9 +115,9 @@ export default ShopStack = () => {
       }}
     >
       <Stack.Screen
-        name="Trips"
-        component={Trips}
-        options={{ headerTitle: 'Trips' }}
+        name="Shop"
+        component={Shop}
+        options={{ headerTitle: 'Shop' }}
       />
       <Stack.Screen
         name="Map"

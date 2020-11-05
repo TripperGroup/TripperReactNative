@@ -82,7 +82,7 @@ const SignIn = ({ navigation }) => {
         loading={loadingIndicator}
         mode="contained"
         onPress={() => {
-          requesting(), signIn(userName, password);
+          signIn(userName, password);
         }}
       >
         {faild ? 'TRY AGAIN' : 'LOGIN'}
