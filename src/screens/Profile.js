@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { Avatar, Badge } from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 import { AuthContext, StateContext } from '../../App';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { colors } from '../constant/theme';

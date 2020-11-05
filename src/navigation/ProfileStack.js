@@ -47,45 +47,6 @@ export const Header = ({ scene, previous, navigation }) => {
           title={title}
         />
       </Appbar.Header>
-      <SearchHeader
-        ref={searchHeaderRef}
-        placeholder="Search trips..."
-        placeholderColor="gray"
-        topOffset={36}
-        autoFocus={true}
-        visibleInitially={false}
-        persistent={false}
-        enableSuggestion={true}
-        style={{
-          header: {
-            height: 70,
-            backgroundColor: `#fdfdfd`,
-          },
-        }}
-        entryAnimation="from-left-side"
-        // pinnedSuggestions={[
-        //   `react-native-search-header`,
-        //   `react-native`,
-        //   `javascript`,
-        // ]}
-        onClear={() => {
-          console.log(`Clearing input!`);
-        }}
-        // onGetAutocompletions={async (text) => {
-        //   if (text) {
-        //     const response = await fetch(
-        //       `http://suggestqueries.google.com/complete/search?client=firefox&q=${text}`,
-        //       {
-        //         method: `get`,
-        //       },
-        //     );
-        //     const data = await response.json();
-        //     return data[1];
-        //   } else {
-        //     return [];
-        //   }
-        // }}
-      />
     </>
   );
 };
