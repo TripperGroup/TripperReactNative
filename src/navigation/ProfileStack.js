@@ -94,7 +94,7 @@ export default ProfileStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="Profile"
-      headerMode="screen"
+      headerMode="float"
       screenOptions={{
         header: ({ scene, previous, navigation }) => (
           <Header
