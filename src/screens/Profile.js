@@ -6,19 +6,14 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import { Avatar } from 'react-native-paper';
+import { Avatar, Badge } from 'react-native-paper';
 import { AuthContext, StateContext } from '../../App';
 
 export default function Profile() {
   const { signOut, guestToSignUp } = useContext(AuthContext);
   const { isGuest } = useContext(StateContext);
   if (!isGuest) {
-    return (
-      <ScrollView>
-        <Avatar.Image size={100} />
-        <Button title="Sign Out" onPress={signOut} />
-      </ScrollView>
-    );
+    return <Text>s</Text>;
   } else {
     return (
       <View>

@@ -33,6 +33,7 @@
     "react-native-screens": "^2.11.0",
     "react-native-search-header": "^0.3.5",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-sticky-parallax-header": "^0.4.0",
     "react-native-svg": "^12.1.0",
     "react-native-svg-icon": "^0.9.0",
     "react-native-vector-icons": "^7.1.0",
