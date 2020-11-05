@@ -19,7 +19,7 @@ import { AuthContext } from '../../App';
 const SignUp = ({ navigation }) => {
   const { signUp } = useContext(AuthContext);
 
-  const [name, setName] = useState('');
+  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
@@ -41,10 +41,10 @@ const SignUp = ({ navigation }) => {
       <TextInput
         style={styles.input}
         mode="outlined"
-        label="Name"
+        label="Username"
         returnKeyType="next"
-        value={name.value}
-        onChangeText={setName}
+        value={userName.value}
+        onChangeText={setUserName}
         error={!!name.error}
         errorText={name.error}
         styles={styles.input}

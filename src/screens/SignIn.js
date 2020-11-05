@@ -11,7 +11,6 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import { TextInput, Button } from 'react-native-paper';
 import Logo from '../components/IntroLogo';
-import { emailValidator, passwordValidator } from '../core/utils';
 import { AuthContext } from '../../App';
 import { StateContext } from '../../App';
 
@@ -40,7 +39,7 @@ const SignIn = ({ navigation }) => {
       <TextInput
         style={styles.input}
         mode="outlined"
-        label="Email or Username"
+        label="Username"
         returnKeyType="next"
         value={userName.value}
         onChangeText={setUserName}
@@ -95,9 +94,9 @@ const SignIn = ({ navigation }) => {
         >
           <Text style={styles.link}>Sign up</Text>
         </TouchableOpacity>
-        <Text> Or </Text>
+        <Text> or </Text>
         <TouchableOpacity onPress={() => guestLogin()}>
-          <Text style={styles.link}>Guest Login</Text>
+          <Text style={styles.link}>Guest login</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
