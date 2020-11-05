@@ -10,11 +10,7 @@ import {
   View,
   ImageBackground,
 } from 'react-native';
-import {
-  DefaultTheme,
-  Provider as PaperProvider,
-  DarkTheme,
-} from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import { NavigationContainer } from '@react-navigation/native';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
@@ -25,17 +21,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import IntroLogo from './src/components/IntroLogo';
 import SplashBackground from './assets/splashImage.jpg';
 
+import { theme } from './src/constant/theme';
+
 export const AuthContext = createContext();
 export const StateContext = createContext();
-
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'white',
-    accent: '#67B75F',
-  },
-};
 
 const App = ({ navigation }) => {
   const [state, dispatch] = useReducer(

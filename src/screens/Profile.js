@@ -1,6 +1,12 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  ScrollView,
+} from 'react-native';
+import { Avatar } from 'react-native-paper';
 import { AuthContext, StateContext } from '../../App';
 
 export default function Profile() {
@@ -8,9 +14,10 @@ export default function Profile() {
   const { isGuest } = useContext(StateContext);
   if (!isGuest) {
     return (
-      <View>
+      <ScrollView>
+        <Avatar.Image size={100} />
         <Button title="Sign Out" onPress={signOut} />
-      </View>
+      </ScrollView>
     );
   } else {
     return (

@@ -5,8 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Profile from '../screens/Profile';
-
-import Map from '../screens/Map';
+import ProfileSetting from '../screens/ProfileSetting';
 
 import SearchHeader from 'react-native-search-header';
 
@@ -36,7 +35,7 @@ export const Header = ({ scene, previous, navigation }) => {
           <Appbar.Action
             icon="cog-outline"
             onPress={() => {
-              navigation.navigate('Map');
+              navigation.navigate('Setting');
             }}
             style={{ opacity: 0.7 }}
           />
@@ -113,7 +112,7 @@ export default ProfileStack = () => {
       />
       <Stack.Screen
         name="Setting"
-        component={Map}
+        component={ProfileSetting}
         options={{ headerTitle: 'Setting' }}
       />
     </Stack.Navigator>
