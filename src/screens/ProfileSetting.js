@@ -3,10 +3,20 @@ import { ScrollView, StyleSheet } from 'react-native';
 import { List, Switch, Text, useTheme } from 'react-native-paper';
 import { colors } from '../constant/theme';
 import { ThemeContext } from '../../App';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function ProfileSetting(props) {
   const paperTheme = useTheme();
   const [isDarkTheme, setIsDarkTheme] = useContext(ThemeContext);
+
+  const changeAndSaveThemeState = async () => {
+    await setIsDarkTheme(!isDarkTheme);
+    await AsyncStorage.setItem(
+      'isDarkTheme',
+      JSON.stringify(!isDarkTheme),
+    );
+    console.log(!isDarkTheme);
+  };
 
   return (
     <ScrollView>
@@ -45,7 +55,7 @@ export default function ProfileSetting(props) {
             <Switch
               value={paperTheme.dark}
               style={styles.rightContent}
-              onValueChange={() => setIsDarkTheme(!isDarkTheme)}
+              onValueChange={() => changeAndSaveThemeState()}
             />
           )}
         />

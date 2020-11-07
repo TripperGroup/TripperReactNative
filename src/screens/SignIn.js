@@ -4,12 +4,11 @@ import axios from 'react-native-axios';
 import {
   TouchableOpacity,
   StyleSheet,
-  Text,
   View,
   Dimensions,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, Text } from 'react-native-paper';
 import Logo from '../components/IntroLogo';
 import { AuthContext } from '../../App';
 import { StateContext } from '../../App';

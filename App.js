@@ -101,7 +101,31 @@ const App = ({ navigation }) => {
     },
   );
 
+  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+
+  const theme = isDarkTheme
+    ? CombinedDarkTheme
+    : CombinedDefaultTheme; // Use Light/Dark theme based on a state
+
+  const barStyle = isDarkTheme ? 'light-content' : 'dark-content'; // Use Light/Dark theme based on a state
+
   useEffect(() => {
+    const fetchTheme = async () => {
+      darkMode = await AsyncStorage.getItem(
+        'isDarkTheme',
+        (err, value) => {
+          if (err) {
+            console.log(err);
+            setIsDarkTheme(true);
+          } else {
+            setIsDarkTheme(JSON.parse(value));
+          }
+        },
+      );
+
+      console.log(darkMode);
+    };
+
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
@@ -114,8 +138,9 @@ const App = ({ navigation }) => {
 
       // After restoring token, we may need to validate it in production apps
 
-      dispatch({ type: 'RESTORE_TOKEN', token: 'userToken' });
+      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
+    fetchTheme();
 
     bootstrapAsync();
   }, []);
@@ -182,14 +207,6 @@ const App = ({ navigation }) => {
     }),
     [],
   );
-
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
-
-  const theme = isDarkTheme
-    ? CombinedDarkTheme
-    : CombinedDefaultTheme; // Use Light/Dark theme based on a state
-
-  const barStyle = isDarkTheme ? 'light-content' : 'dark-content'; // Use Light/Dark theme based on a state
 
   if (!state.isLoading) {
     return (
