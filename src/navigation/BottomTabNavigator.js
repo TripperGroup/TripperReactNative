@@ -2,6 +2,7 @@ import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { useTheme, Portal, FAB } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import TripStack from './TripStack';
 import WikiStack from './WikiStack';
@@ -15,6 +16,8 @@ const BottomTabNavigator = () => {
 
   const onStateChange = ({ open }) => setState({ open });
 
+  const insets = useSafeAreaInsets();
+
   const { open } = state;
   return (
     <>
@@ -23,7 +26,7 @@ const BottomTabNavigator = () => {
         sceneAnimationEnabled="true"
         initialRouteName="Trips"
         shifting="true"
-        barStyle={{ backgroundColor: '#ffff' }}
+        //barStyle={{ backgroundColor: '#ffff' }}
       >
         <Tab.Screen
           name="Trips"
@@ -67,7 +70,7 @@ const BottomTabNavigator = () => {
           color="#ffff"
           style={{
             position: 'absolute',
-            bottom: 40,
+            bottom: insets.bottom + 55,
           }}
           icon={open ? 'map-plus' : 'plus'}
           actions={[

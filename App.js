@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import { NavigationContainer } from '@react-navigation/native';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import AuthNavigations from './src/navigation/AuthNavigations';
@@ -22,10 +24,15 @@ import AsyncStorage from '@react-native-community/async-storage';
 import IntroLogo from './src/components/IntroLogo';
 import SplashBackground from './assets/splashImage.jpg';
 
-import { theme } from './src/constant/theme';
+import {
+  theme,
+  CombinedDarkTheme,
+  CombinedDefaultTheme,
+} from './src/constant/theme';
 
 export const AuthContext = createContext();
 export const StateContext = createContext();
+export const ThemeContext = createContext();
 
 const App = ({ navigation }) => {
   const [state, dispatch] = useReducer(
@@ -107,7 +114,7 @@ const App = ({ navigation }) => {
 
       // After restoring token, we may need to validate it in production apps
 
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      dispatch({ type: 'RESTORE_TOKEN', token: 'userToken' });
     };
 
     bootstrapAsync();
@@ -176,22 +183,40 @@ const App = ({ navigation }) => {
     [],
   );
 
+  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+
+  const theme = isDarkTheme
+    ? CombinedDarkTheme
+    : CombinedDefaultTheme; // Use Light/Dark theme based on a state
+
+  const barStyle = isDarkTheme ? 'light-content' : 'dark-content'; // Use Light/Dark theme based on a state
+
   if (!state.isLoading) {
     return (
-      <AuthContext.Provider value={authContext}>
-        <StatusBar translucent backgroundColor="transparent" />
-        <StateContext.Provider value={state}>
-          <PaperProvider theme={theme}>
-            <NavigationContainer>
-              {state.userToken == null && !state.isGuest ? (
-                <AuthNavigations />
-              ) : (
-                <BottomTabNavigator />
-              )}
-            </NavigationContainer>
-          </PaperProvider>
-        </StateContext.Provider>
-      </AuthContext.Provider>
+      <SafeAreaProvider>
+        <AuthContext.Provider value={authContext}>
+          <StatusBar
+            translucent
+            backgroundColor="transparent"
+            barStyle={barStyle}
+          />
+          <StateContext.Provider value={state}>
+            <ThemeContext.Provider
+              value={[isDarkTheme, setIsDarkTheme]}
+            >
+              <PaperProvider theme={theme}>
+                <NavigationContainer theme={theme}>
+                  {state.userToken == null && !state.isGuest ? (
+                    <AuthNavigations />
+                  ) : (
+                    <BottomTabNavigator theme={theme} />
+                  )}
+                </NavigationContainer>
+              </PaperProvider>
+            </ThemeContext.Provider>
+          </StateContext.Provider>
+        </AuthContext.Provider>
+      </SafeAreaProvider>
     );
   } else {
     return (

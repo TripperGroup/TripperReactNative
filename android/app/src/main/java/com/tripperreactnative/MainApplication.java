@@ -8,6 +8,8 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 import io.expo.appearance.RNCAppearancePackage;
 import io.expo.appearance.RNCAppearancePackage;
 import com.oblador.vectoricons.VectorIconsPackage;

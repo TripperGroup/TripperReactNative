@@ -45,8 +45,8 @@ const SignUp = ({ navigation }) => {
         returnKeyType="next"
         value={userName.value}
         onChangeText={setUserName}
-        error={!!name.error}
-        errorText={name.error}
+        // error={!!name.error}
+        // errorText={name.error}
         styles={styles.input}
       />
 

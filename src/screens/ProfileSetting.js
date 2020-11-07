@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { List, Switch, Text } from 'react-native-paper';
+import { List, Switch, Text, useTheme } from 'react-native-paper';
 import { colors } from '../constant/theme';
-export default function ProfileSetting() {
+import { ThemeContext } from '../../App';
+
+export default function ProfileSetting(props) {
+  const paperTheme = useTheme();
+  const [isDarkTheme, setIsDarkTheme] = useContext(ThemeContext);
+
   return (
     <ScrollView>
       <List.Section style={styles.container}>
@@ -36,7 +41,13 @@ export default function ProfileSetting() {
           left={() => (
             <List.Icon style={styles.icon} icon="weather-night" />
           )}
-          right={() => <Switch style={styles.rightContent} />}
+          right={() => (
+            <Switch
+              value={paperTheme.dark}
+              style={styles.rightContent}
+              onValueChange={() => setIsDarkTheme(!isDarkTheme)}
+            />
+          )}
         />
         <List.Item
           style={styles.item}
