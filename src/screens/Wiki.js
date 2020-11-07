@@ -1,11 +1,11 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
-  View,
-  ScrollView,
   Dimensions,
+  ScrollView,
+  View,
 } from 'react-native';
+import { Text } from 'react-native-paper';
 import WikiCarousal from '../components/WikiCarousal';
 export default function Wiki() {
   return (
