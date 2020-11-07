@@ -37,3 +37,22 @@ export const colors = {
   primary: 'white',
   accent: '#67B75F',
 };
+
+//Auth Theme
+export const lightThemeAuth = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#67B75F',
+    accent: 'white',
+  },
+};
+
+export const darkThemeAuth = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    primary: '#67B75F',
+    accent: '#67B75F',
+  },
+};

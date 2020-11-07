@@ -122,8 +122,6 @@ const App = ({ navigation }) => {
           }
         },
       );
-
-      console.log(darkMode);
     };
 
     // Fetch the token from storage then navigate to our appropriate place
@@ -141,7 +139,6 @@ const App = ({ navigation }) => {
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
     fetchTheme();
-
     bootstrapAsync();
   }, []);
 

@@ -3,24 +3,23 @@ import {
   DefaultTheme,
   Provider as PaperProvider,
   DarkTheme,
+  Paragraph,
+  useTheme,
 } from 'react-native-paper';
 
 import SignIn from '../screens/SignIn';
 import SignUp from '../screens/SignUp';
 import { createStackNavigator } from '@react-navigation/stack';
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: '#67B75F',
-    accent: 'white',
-  },
-};
+import { darkThemeAuth, lightThemeAuth } from '../constant/theme';
 
 const Stack = createStackNavigator();
 
 export default AuthNavigations = () => {
+  const paperTheme = useTheme();
+
+  const theme = paperTheme.dark ? darkThemeAuth : lightThemeAuth;
+
   return (
     <PaperProvider theme={theme}>
       <Stack.Navigator

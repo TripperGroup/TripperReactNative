@@ -15,7 +15,6 @@ export default function ProfileSetting(props) {
       'isDarkTheme',
       JSON.stringify(!isDarkTheme),
     );
-    console.log(!isDarkTheme);
   };
 
   return (
