@@ -67,7 +67,7 @@ const BottomTabNavigator = () => {
           color="#ffff"
           style={{
             position: 'absolute',
-            bottom: 90,
+            bottom: 40,
           }}
           icon={open ? 'map-plus' : 'plus'}
           actions={[

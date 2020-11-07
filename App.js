@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   View,
   ImageBackground,
+  StatusBar,
 } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
@@ -178,6 +179,7 @@ const App = ({ navigation }) => {
   if (!state.isLoading) {
     return (
       <AuthContext.Provider value={authContext}>
+        <StatusBar translucent backgroundColor="transparent" />
         <StateContext.Provider value={state}>
           <PaperProvider theme={theme}>
             <NavigationContainer>
