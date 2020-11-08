@@ -9,6 +9,8 @@ import {
   Modal,
   Provider,
 } from 'react-native-paper';
+import { STATUSBAR_HEIGHT } from '../constant/Dimansions';
+
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -35,7 +37,7 @@ export const Header = ({ scene, previous, navigation }) => {
 
   return (
     <>
-      <Appbar.Header>
+      <Appbar.Header statusBarHeight={STATUSBAR_HEIGHT}>
         {previous ? ( // Work on that later to handle back button
           <Appbar.BackAction onPress={navigation.goBack} />
         ) : (
