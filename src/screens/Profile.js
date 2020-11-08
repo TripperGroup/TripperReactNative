@@ -1,13 +1,11 @@
 import React, { useContext } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  Button,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { Avatar } from 'react-native-paper';
+import { Avatar, Text, Button } from 'react-native-paper';
 import { AuthContext, StateContext } from '../../App';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { colors } from '../constant/theme';
@@ -100,14 +98,14 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    //backgroundColor: '#fff',
   },
   text: {
-    color: 'white',
+    //color: 'white',
     fontSize: 42,
     fontWeight: 'bold',
     textAlign: 'center',
-    backgroundColor: '#000000a0',
+    //backgroundColor: '#000000a0',
   },
   avatar: {
     alignSelf: 'center',
@@ -126,7 +124,7 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 20,
     fontWeight: '300',
-    backgroundColor: '#ffffff80',
+    //backgroundColor: '#ffffff80',
     marginVertical: 10,
     alignSelf: 'center',
   },

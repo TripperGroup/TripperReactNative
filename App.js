@@ -136,7 +136,7 @@ const App = ({ navigation }) => {
 
       // After restoring token, we may need to validate it in production apps
 
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      dispatch({ type: 'RESTORE_TOKEN', token: 'userToken' });
     };
     fetchTheme();
     bootstrapAsync();
