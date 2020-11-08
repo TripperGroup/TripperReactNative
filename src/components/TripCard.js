@@ -7,9 +7,8 @@ import {
   Paragraph,
   Button,
 } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { MaterialIcon, ActivitieIcon } from '../components/Icon';
 import { useState } from 'react';
-import CustomIcon from '../components/CustomIcon.js';
 cardSubTitle = 'Mohammad' + ' · ' + 'Adventure ' + ' · ' + '10 Days';
 // for test, All data pass by prob in one backend integration
 
@@ -32,8 +31,8 @@ const RighContent = () => (
       marginRight: 8,
     }}
   >
-    <MaterialCommunityIcons size={25} name="heart-outline" />
-    <MaterialCommunityIcons
+    <MaterialIcon size={25} name="heart-outline" />
+    <MaterialIcon
       style={{ marginLeft: 5 }}
       size={25}
       name="dots-vertical"
@@ -78,9 +77,9 @@ const TripCard = () => {
             opacity: 0.7,
           }}
         >
-          <CustomIcon name="1" size={30} />
-          <CustomIcon name="20" size={30} />
-          <CustomIcon name="3" size={30} />
+          <ActivitieIcon name="1" size={30} />
+          <ActivitieIcon name="20" size={30} />
+          <ActivitieIcon name="3" size={30} />
         </View>
         <Paragraph>
           Lorem Ipsum is simply dummy text of the printing and
