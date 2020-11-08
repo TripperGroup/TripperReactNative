@@ -8,6 +8,7 @@ import TripStack from './TripStack';
 import WikiStack from './WikiStack';
 import ShopStack from './ShopStack';
 import ProfileStack from './ProfileStack';
+import { colors } from '../constant/theme';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -68,6 +69,7 @@ const BottomTabNavigator = () => {
         <FAB.Group
           open={open}
           color="#ffff"
+          fabStyle={{ backgroundColor: colors.accent }}
           style={{
             position: 'absolute',
             bottom: insets.bottom + 55,
