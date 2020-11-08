@@ -1,13 +1,10 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Text, View } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import { StyleSheet, ScrollView, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import IntroAnimation from '../components/IntroAnimation';
 
 export default function Shop({ navigation }) {
-  return (
-    <ScrollView>
-      <Text>kjeorijveoijeorigjeroijo</Text>
-    </ScrollView>
-  );
+  return <IntroAnimation />;
 }
 
 const styles = StyleSheet.create({});
