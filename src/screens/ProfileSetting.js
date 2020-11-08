@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { List, Switch, Text, useTheme } from 'react-native-paper';
-import { colors } from '../constant/theme';
 import { ThemeContext } from '../../App';
 import AsyncStorage from '@react-native-community/async-storage';
+import { colors } from '../constant/theme';
 
 export default function ProfileSetting(props) {
   const paperTheme = useTheme();
@@ -30,7 +30,12 @@ export default function ProfileSetting(props) {
           left={() => (
             <List.Icon style={styles.icon} icon="wallet-travel" />
           )}
-          right={() => <Switch style={styles.rightContent} />}
+          right={() => (
+            <Switch
+              color={isDarkTheme ? colors.accent : null}
+              style={styles.rightContent}
+            />
+          )}
         />
         <List.Item
           style={styles.item}
@@ -52,6 +57,7 @@ export default function ProfileSetting(props) {
           )}
           right={() => (
             <Switch
+              color={isDarkTheme ? colors.accent : null}
               value={paperTheme.dark}
               style={styles.rightContent}
               onValueChange={() => changeAndSaveThemeState()}
