@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import TripCard from '../components/TripCard';
 import TripCarousel from '../components/TripCarousel';
 
-const Trips = ({ navigation }) => {
+const Trips = () => {
   return (
     <>
       <ScrollView>

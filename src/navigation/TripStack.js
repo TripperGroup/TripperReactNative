@@ -6,8 +6,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { STATUSBAR_HEIGHT } from '../constant/Dimansions';
 
 import Trips from '../screens/Trips';
-
 import Map from '../screens/Map';
+import TripDetail from '../screens/TripDetails';
 
 import SearchHeader from 'react-native-search-header';
 
@@ -112,6 +112,11 @@ export default TripStack = () => {
         ),
       }}
     >
+      <Stack.Screen
+        name="TripDetail"
+        component={TripDetail}
+        options={({ route }) => ({ title: route.params.name })}
+      />
       <Stack.Screen
         name="Trips"
         component={Trips}

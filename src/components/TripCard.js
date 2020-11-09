@@ -1,15 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import {
   Avatar,
   Card,
   Title,
   Paragraph,
   Button,
+  Text,
 } from 'react-native-paper';
 import { MaterialIcon, ActivitieIcon } from '../components/Icon';
 import LottieView from 'lottie-react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 cardSubTitle = 'Mohammad' + ' · ' + 'Adventure ' + ' · ' + '10 Days';
 // for test, All data pass by prob in one backend integration
@@ -62,21 +64,6 @@ const RighContent = () => {
           size={25}
           name={like ? 'heart' : 'heart-outline'}
         />
-        {/* <LottieView
-          source={require('../../assets/836-like-button.json')}
-          loop={false}
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            width: 50,
-            height: 50,
-          }}
-          autoSize
-          ref={animation}
-        /> */}
       </TouchableOpacity>
       <MaterialIcon
         style={{ marginLeft: 5, opacity: 0.5 }}
@@ -88,6 +75,8 @@ const RighContent = () => {
 };
 
 const TripCard = () => {
+  const navigation = useNavigation();
+
   return (
     <Card
       style={{
@@ -111,29 +100,45 @@ const TripCard = () => {
         right={RighContent}
       />
       <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-      <Card.Content style={{ padding: 10 }}>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            marginBottom: 5,
-            opacity: 0.7,
-          }}
-        >
-          <ActivitieIcon name="1" size={30} />
-          <ActivitieIcon name="20" size={30} />
-          <ActivitieIcon name="3" size={30} />
-        </View>
-        <Paragraph>
-          Lorem Ipsum is simply dummy text of the printing and
-          typesetting industry. Lorem Ipsum has been the industry's
-          standard dummy text ever since the 1500
-        </Paragraph>
-
-        <Card.Actions
-          style={{ display: 'flex', justifyContent: 'space-between' }}
-        ></Card.Actions>
-      </Card.Content>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('TripDetail', {
+            name: 'Custom trip header name',
+          })
+        }
+      >
+        <Card.Content style={{ padding: 10 }}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              marginBottom: 5,
+              opacity: 0.7,
+            }}
+          >
+            <ActivitieIcon name="1" size={30} />
+            <ActivitieIcon name="20" size={30} />
+            <ActivitieIcon name="3" size={30} />
+            <ActivitieIcon name="38" size={30} />
+            <ActivitieIcon name="31" size={30} />
+            <ActivitieIcon name="108" size={30} />
+          </View>
+          <Paragraph>
+            Lorem Ipsum is simply dummy text of the printing and
+            typesetting industry. Lorem Ipsum has been the industry's
+            standard dummy text ever since the 1500
+          </Paragraph>
+          <Text style={{ marginTop: 6, fontWeight: 'bold' }}>
+            More details ...
+          </Text>
+          <Card.Actions
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          ></Card.Actions>
+        </Card.Content>
+      </TouchableOpacity>
     </Card>
   );
 };
