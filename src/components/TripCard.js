@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text } from 'react-native';
 import {
   Avatar,
@@ -8,7 +8,9 @@ import {
   Button,
 } from 'react-native-paper';
 import { MaterialIcon, ActivitieIcon } from '../components/Icon';
-import { useState } from 'react';
+import LottieView from 'lottie-react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 cardSubTitle = 'Mohammad' + ' · ' + 'Adventure ' + ' · ' + '10 Days';
 // for test, All data pass by prob in one backend integration
 
@@ -22,29 +24,70 @@ const LeftContent = (props) => (
   />
 );
 
-const RighContent = () => (
-  <View
-    style={{
-      display: 'flex',
-      flexDirection: 'row',
-      opacity: 0.5,
-      marginRight: 8,
-    }}
-  >
-    <MaterialIcon size={25} name="heart-outline" />
-    <MaterialIcon
-      style={{ marginLeft: 5 }}
-      size={25}
-      name="dots-vertical"
-    />
-  </View>
-);
+const RighContent = () => {
+  const [like, setLike] = useState(0);
+
+  const animation = useRef();
+
+  const toggleLike = () => {
+    setLike(!like);
+    // like ? null : animation.current.play();
+  };
+
+  return (
+    <View
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        //opacity: 0.5,
+        marginRight: 8,
+      }}
+    >
+      <TouchableOpacity
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        onPress={() => toggleLike()}
+      >
+        <MaterialIcon
+          style={{
+            opacity: 0.5,
+            width: '100%',
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          size={25}
+          name={like ? 'heart' : 'heart-outline'}
+        />
+        {/* <LottieView
+          source={require('../../assets/836-like-button.json')}
+          loop={false}
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width: 50,
+            height: 50,
+          }}
+          autoSize
+          ref={animation}
+        /> */}
+      </TouchableOpacity>
+      <MaterialIcon
+        style={{ marginLeft: 5, opacity: 0.5 }}
+        size={25}
+        name="dots-vertical"
+      />
+    </View>
+  );
+};
 
 const TripCard = () => {
-  const [like, setLike] = useState(0);
-  const _like = () => {
-    setLike(!like);
-  };
   return (
     <Card
       style={{
