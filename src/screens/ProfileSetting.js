@@ -10,11 +10,11 @@ export default function ProfileSetting(props) {
   const [isDarkTheme, setIsDarkTheme] = useContext(ThemeContext);
 
   const changeAndSaveThemeState = async () => {
-    await setIsDarkTheme(!isDarkTheme);
     await AsyncStorage.setItem(
       'isDarkTheme',
       JSON.stringify(!isDarkTheme),
     );
+    await setIsDarkTheme(!isDarkTheme);
   };
 
   return (
