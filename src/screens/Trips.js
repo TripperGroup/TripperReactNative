@@ -44,7 +44,8 @@ const Trips = () => {
     return token;
   }
 
-  function fetchTrips() {
+  async function fetchTrips() {
+    setRefreshing(true);
     var token = () => fetchToken();
     const configGetTrip = {
       method: 'get',
@@ -53,10 +54,11 @@ const Trips = () => {
       headers: token ? { Authorization: `Token ${token}` } : null,
     };
 
-    axios(configGetTrip)
+    await axios(configGetTrip)
       .then(function (response) {
         setTrips(response.data.results);
         setHaveNext(response.data.next ? true : false);
+        setRefreshing(false);
       })
       .catch(function (error) {
         console.log(error);
@@ -77,6 +79,7 @@ const Trips = () => {
     axios(configGetTrip)
       .then(function (response) {
         setFetching(true);
+
         setTrips([...trips, ...response.data.results]);
         setPageOffset(pageOffset + 1);
         setHaveNext(response.data.next ? true : false);
@@ -94,9 +97,7 @@ const Trips = () => {
   }, []);
 
   const onRefresh = useCallback(async () => {
-    setRefreshing(true);
     fetchTrips();
-    setRefreshing(false);
     console.log(fetching);
   }, [refreshing]);
 
