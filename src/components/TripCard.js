@@ -13,16 +13,25 @@ import LottieView from 'lottie-react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
-cardSubTitle = 'Mohammad' + ' · ' + 'Adventure ' + ' · ' + '10 Days';
+import manAvatar from '../../assets/man-avatar.jpg';
+import womanAvatar from '../../assets/woman-avatar.jpg';
+
+const cardSubTitle =
+  'Mohammad' + ' · ' + 'Adventure ' + ' · ' + '10 Days';
 // for test, All data pass by prob in one backend integration
 
-const LeftContent = (props) => (
+const LeftContent = (avatar, gender) => (
   <Avatar.Image
     size={40}
-    source={{
-      uri:
-        'https://tinyfac.es//data//avatars//E0B4CAB3-F491-4322-BEF2-208B46748D4A-500w.jpeg',
-    }}
+    source={
+      avatar
+        ? {
+            uri: avatar,
+          }
+        : gender === 'WM'
+        ? womanAvatar
+        : manAvatar
+    }
   />
 );
 
@@ -74,7 +83,7 @@ const RighContent = () => {
   );
 };
 
-const TripCard = () => {
+const TripCard = (props) => {
   const navigation = useNavigation();
 
   return (
@@ -94,16 +103,26 @@ const TripCard = () => {
       }}
     >
       <Card.Title
-        title="Trip Name"
-        subtitle={cardSubTitle}
-        left={LeftContent}
+        title={props.subject}
+        subtitle={
+          props.auther +
+          (props.days != null
+            ? ' • ' +
+              (props.days > 1
+                ? props.days + ' days'
+                : props.days == 0
+                ? 'Less than a day'
+                : 'a day')
+            : '')
+        }
+        left={() => LeftContent(props.avatar, props.gender)}
         right={RighContent}
       />
       <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('TripDetail', {
-            name: 'Custom trip header name',
+            name: props.subject,
           })
         }
       >
@@ -123,11 +142,7 @@ const TripCard = () => {
             <ActivitieIcon name="31" size={30} />
             <ActivitieIcon name="108" size={30} />
           </View>
-          <Paragraph>
-            Lorem Ipsum is simply dummy text of the printing and
-            typesetting industry. Lorem Ipsum has been the industry's
-            standard dummy text ever since the 1500
-          </Paragraph>
+          <Paragraph>{props.description}</Paragraph>
           <Text style={{ marginTop: 6, fontWeight: 'bold' }}>
             More details ...
           </Text>

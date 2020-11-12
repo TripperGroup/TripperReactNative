@@ -18,7 +18,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import AuthNavigations from './src/navigation/AuthNavigations';
-import axios from 'react-native-axios';
+import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import IntroLogo from './src/components/IntroLogo';
@@ -136,7 +136,7 @@ const App = ({ navigation }) => {
 
       // After restoring token, we may need to validate it in production apps
 
-      dispatch({ type: 'RESTORE_TOKEN', token: 'userToken' });
+      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
     fetchTheme();
     bootstrapAsync();

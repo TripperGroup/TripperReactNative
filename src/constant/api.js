@@ -1,4 +1,4 @@
-import axios from 'react-native-axios';
+import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const bootstrapAsync = async () => {
@@ -13,11 +13,8 @@ const bootstrapAsync = async () => {
 
 const token = bootstrapAsync();
 
-axios.defaults.baseURL = 'http://127.0.0.1:8001/api';
-axios.defaults.headers.common['Authorization'] = `Token ${token}`;
-
-const TripperApi = axios.create();
-
-TripperApi.defaults.timeout = 2500;
-
-export default TripperApi;
+export const configGet = {
+  method: 'get',
+  url: 'http://127.0.0.1:8001/api/trip/',
+  headers: { Authorization: `Token ${token}` },
+};
