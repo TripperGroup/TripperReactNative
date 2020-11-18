@@ -98,7 +98,6 @@ const Trips = () => {
 
   const onRefresh = useCallback(async () => {
     fetchTrips();
-    console.log(fetching);
   }, [refreshing]);
 
   return (

@@ -119,41 +119,42 @@ const TripCard = (props) => {
         right={RighContent}
       />
       <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('TripDetail', {
-            name: props.subject,
-          })
-        }
-      >
-        <Card.Content style={{ padding: 10 }}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              marginBottom: 5,
-              opacity: 0.7,
-            }}
-          >
-            <ActivitieIcon name="1" size={30} />
-            <ActivitieIcon name="20" size={30} />
-            <ActivitieIcon name="3" size={30} />
-            <ActivitieIcon name="38" size={30} />
-            <ActivitieIcon name="31" size={30} />
-            <ActivitieIcon name="108" size={30} />
-          </View>
+
+      <Card.Content style={{ padding: 10 }}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginBottom: 5,
+            opacity: 0.7,
+          }}
+        >
+          <ActivitieIcon name="1" size={30} />
+          <ActivitieIcon name="20" size={30} />
+          <ActivitieIcon name="3" size={30} />
+          <ActivitieIcon name="38" size={30} />
+          <ActivitieIcon name="31" size={30} />
+          <ActivitieIcon name="108" size={30} />
+        </View>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('TripDetail', {
+              name: props.subject,
+            })
+          }
+        >
           <Paragraph>{props.description}</Paragraph>
           <Text style={{ marginTop: 6, fontWeight: 'bold' }}>
             More details ...
           </Text>
-          <Card.Actions
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          ></Card.Actions>
-        </Card.Content>
-      </TouchableOpacity>
+        </TouchableOpacity>
+        <Card.Actions
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        ></Card.Actions>
+      </Card.Content>
     </Card>
   );
 };
