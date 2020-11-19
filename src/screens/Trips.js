@@ -20,6 +20,8 @@ import { colors } from '../constant/theme';
 import { set } from 'react-native-reanimated';
 import DoneAnimation from '../components/DoneAnimation';
 
+import apiUrl from '../constant/api';
+
 const isCloseToBottom = ({
   layoutMeasurement,
   contentOffset,
@@ -49,7 +51,7 @@ const Trips = () => {
     var token = () => fetchToken();
     const configGetTrip = {
       method: 'get',
-      url: 'http://127.0.0.1:8001/api/tripSummery/',
+      url: apiUrl + '/tripSummery/',
 
       headers: token ? { Authorization: `Token ${token}` } : null,
     };
@@ -70,8 +72,7 @@ const Trips = () => {
 
     const configGetTrip = {
       method: 'get',
-      url:
-        'http://127.0.0.1:8001/api/tripSummery/?page=' + pageOffset,
+      url: apiUrl + '/tripSummery/?page=' + pageOffset,
 
       headers: token ? { Authorization: `Token ${token}` } : null,
     };

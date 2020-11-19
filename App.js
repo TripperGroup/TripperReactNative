@@ -3,6 +3,7 @@ import React, {
   useEffect,
   useMemo,
   createContext,
+  useState,
 } from 'react';
 
 import {
@@ -23,6 +24,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import IntroLogo from './src/components/IntroLogo';
 import SplashBackground from './assets/splashImage.jpg';
+
+import apiUrl from './src/constant/api';
 
 import {
   theme,
@@ -101,7 +104,7 @@ const App = ({ navigation }) => {
     },
   );
 
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   const theme = isDarkTheme
     ? CombinedDarkTheme
@@ -149,7 +152,7 @@ const App = ({ navigation }) => {
       requesting: () => dispatch({ type: 'REQUESTED' }),
       signIn: async (username, password) => {
         axios
-          .post('http://127.0.0.1:8001/api/auth/token/login/', {
+          .post(apiUrl + '/auth/token/login/', {
             username,
             password,
           })
@@ -158,10 +161,14 @@ const App = ({ navigation }) => {
             AsyncStorage.setItem('token', token);
             dispatch({ type: 'SIGN_IN', token: token });
           })
-          .catch(
-            (error) => console.log(error),
-            dispatch({ type: 'FAILD' }),
-          );
+          .catch((error) => {
+            dispatch({ type: 'FAILD', error: error });
+            console.log(error);
+            if (error.response) {
+              console.log(error.response.data);
+              let err = error.response.data;
+            }
+          });
         //await AsyncStorage.setItem('token', token);
       },
       signOut: async () => {
@@ -169,7 +176,7 @@ const App = ({ navigation }) => {
         console.log(token);
         axios
           .post(
-            'http://127.0.0.1:8001/api/auth/token/logout/',
+            apiUrl + '/auth/token/logout/',
             {},
             {
               headers: {
@@ -190,7 +197,7 @@ const App = ({ navigation }) => {
       },
       signUp: async (name, email, password, password2) => {
         axios
-          .post('http://127.0.0.1:8001/api/auth/users/', {
+          .post(apiUrl + '/auth/users/', {
             username: name,
             email: email,
             password: password,
@@ -199,7 +206,13 @@ const App = ({ navigation }) => {
           .then((res) => {
             console.log(res.data);
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            if (error.response) {
+              let err = error.response.data;
+              console.log(err);
+            }
+          });
       },
     }),
     [],

@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { List, Switch, Text, useTheme } from 'react-native-paper';
-import { ThemeContext } from '../../App';
+import { ThemeContext, AuthContext } from '../../App';
 import AsyncStorage from '@react-native-community/async-storage';
 import { colors } from '../constant/theme';
 
 export default function ProfileSetting(props) {
   const paperTheme = useTheme();
   const [isDarkTheme, setIsDarkTheme] = useContext(ThemeContext);
+  const { signOut } = useContext(AuthContext);
 
   const changeAndSaveThemeState = async () => {
     await AsyncStorage.setItem(
@@ -43,6 +44,12 @@ export default function ProfileSetting(props) {
           left={() => (
             <List.Icon style={styles.icon} icon="account-edit" />
           )}
+        />
+        <List.Item
+          style={styles.item}
+          title="Log out"
+          onPress={() => signOut()}
+          left={() => <List.Icon style={styles.icon} icon="logout" />}
         />
 
         {/* ----- */}

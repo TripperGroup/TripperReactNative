@@ -4,8 +4,9 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Button,
 } from 'react-native';
-import { Avatar, Text, Button } from 'react-native-paper';
+import { Avatar, Text } from 'react-native-paper';
 import { AuthContext, StateContext } from '../../App';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { colors } from '../constant/theme';
@@ -79,12 +80,12 @@ export default function Profile() {
     );
   } else {
     return (
-      <View>
+      <>
         <Button
           title="Register or login to accsee "
           onPress={() => guestToSignUp()}
-        />
-      </View>
+        ></Button>
+      </>
     );
   }
 }

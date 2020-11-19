@@ -9,10 +9,11 @@ import {
   passwordValidator,
   nameValidator,
 } from '../core/utils';
-import { AuthContext } from '../../App';
+import { AuthContext, StateContext } from '../../App';
 
 const SignUp = ({ navigation }) => {
   const { signUp } = useContext(AuthContext);
+  const { signUpError } = useContext(StateContext);
 
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -86,10 +87,12 @@ const SignUp = ({ navigation }) => {
         styles={styles.input}
       />
 
+      <Text>{signUpError}</Text>
+
       <Button
         dark
         mode="contained"
-        onPress={() => signUp(name, email, password, password2)}
+        onPress={() => signUp(userName, email, password, password2)}
         style={styles.button}
       >
         Sign Up
