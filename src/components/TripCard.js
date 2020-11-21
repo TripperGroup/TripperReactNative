@@ -136,6 +136,8 @@ const TripCard = (props) => {
           <ActivitieIcon name="31" size={30} />
           <ActivitieIcon name="108" size={30} />
         </View>
+
+        <Paragraph>{props.description}</Paragraph>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('TripDetail', {
@@ -143,7 +145,6 @@ const TripCard = (props) => {
             })
           }
         >
-          <Paragraph>{props.description}</Paragraph>
           <Text style={{ marginTop: 6, fontWeight: 'bold' }}>
             More details ...
           </Text>

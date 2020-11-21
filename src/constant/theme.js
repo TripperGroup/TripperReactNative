@@ -20,8 +20,11 @@ export const CombinedDefaultTheme = {
 };
 export const CombinedDarkTheme = {
   ...PaperDarkTheme,
-
   ...NavigationDarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: '#141414',
+  },
 };
 
 // export const theme = {

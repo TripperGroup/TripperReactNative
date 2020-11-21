@@ -22,9 +22,6 @@ import AuthNavigations from './src/navigation/AuthNavigations';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import IntroLogo from './src/components/IntroLogo';
-import SplashBackground from './assets/splashImage.jpg';
-
 import apiUrl from './src/constant/api';
 
 import {
@@ -151,24 +148,25 @@ const App = ({ navigation }) => {
       guestToSignUp: () => dispatch({ type: 'NOTGUEST' }),
       requesting: () => dispatch({ type: 'REQUESTED' }),
       signIn: async (username, password) => {
-        axios
-          .post(apiUrl + '/auth/token/login/', {
-            username,
-            password,
-          })
-          .then((response) => {
-            let token = response.data.auth_token;
-            AsyncStorage.setItem('token', token);
-            dispatch({ type: 'SIGN_IN', token: token });
-          })
-          .catch((error) => {
-            dispatch({ type: 'FAILD', error: error });
-            console.log(error);
-            if (error.response) {
-              console.log(error.response.data);
-              let err = error.response.data;
-            }
-          });
+        dispatch({ type: 'REQUESTED' }),
+          axios
+            .post(apiUrl + '/auth/token/login/', {
+              username,
+              password,
+            })
+            .then((response) => {
+              let token = response.data.auth_token;
+              AsyncStorage.setItem('token', token);
+              dispatch({ type: 'SIGN_IN', token: token });
+            })
+            .catch((error) => {
+              dispatch({ type: 'FAILD', error: error });
+              console.log(error);
+              if (error.response) {
+                console.log(error.response.data);
+                let err = error.response.data;
+              }
+            });
         //await AsyncStorage.setItem('token', token);
       },
       signOut: async () => {
@@ -218,59 +216,32 @@ const App = ({ navigation }) => {
     [],
   );
 
-  if (!state.isLoading) {
-    return (
-      <SafeAreaProvider>
-        <AuthContext.Provider value={authContext}>
-          <StatusBar
-            translucent
-            backgroundColor="transparent"
-            barStyle={barStyle}
-          />
-          <StateContext.Provider value={state}>
-            <ThemeContext.Provider
-              value={[isDarkTheme, setIsDarkTheme]}
-            >
-              <PaperProvider theme={theme}>
-                <NavigationContainer theme={theme}>
-                  {state.userToken == null && !state.isGuest ? (
-                    <AuthNavigations />
-                  ) : (
-                    <BottomTabNavigator theme={theme} />
-                  )}
-                </NavigationContainer>
-              </PaperProvider>
-            </ThemeContext.Provider>
-          </StateContext.Provider>
-        </AuthContext.Provider>
-      </SafeAreaProvider>
-    );
-  } else {
-    return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'column',
-        }}
-      >
-        <ImageBackground
-          source={SplashBackground}
-          style={{
-            flex: 1,
-            resizeMode: 'cover',
-            justifyContent: 'center',
-          }}
-          imageStyle={{ opacity: 1 }}
-        >
-          <IntroLogo />
-          <ActivityIndicator
-            color="white"
-            style={{ marginTop: 15 }}
-          />
-        </ImageBackground>
-      </View>
-    );
-  }
+  return (
+    <SafeAreaProvider>
+      <AuthContext.Provider value={authContext}>
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle={barStyle}
+        />
+        <StateContext.Provider value={state}>
+          <ThemeContext.Provider
+            value={[isDarkTheme, setIsDarkTheme]}
+          >
+            <PaperProvider theme={theme}>
+              <NavigationContainer theme={theme}>
+                {state.userToken == null && !state.isGuest ? (
+                  <AuthNavigations />
+                ) : (
+                  <BottomTabNavigator theme={theme} />
+                )}
+              </NavigationContainer>
+            </PaperProvider>
+          </ThemeContext.Provider>
+        </StateContext.Provider>
+      </AuthContext.Provider>
+    </SafeAreaProvider>
+  );
 };
 
 export default App;

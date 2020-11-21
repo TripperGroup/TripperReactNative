@@ -73,7 +73,6 @@ export default function Profile() {
           }}
         >
           <Tab.Screen name="Trips" component={test} />
-          <Tab.Screen name="Articles" component={test} />
           <Tab.Screen name="Likes" component={test} />
         </Tab.Navigator>
       </ScrollView>

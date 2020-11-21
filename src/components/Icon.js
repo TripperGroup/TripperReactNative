@@ -16,6 +16,9 @@ export const MaterialIcon = (props) => {
 export const ActivitieIcon = (props) => {
   const paperTheme = useTheme();
   return (
-    <CustomIcon color={paperTheme.dark ? 'white' : null} {...props} />
+    <CustomIcon
+      color={paperTheme.dark ? 'white' : 'black'}
+      {...props}
+    />
   );
 };

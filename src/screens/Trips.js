@@ -17,8 +17,7 @@ import TripCarousel from '../components/TripCarousel';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import { colors } from '../constant/theme';
-import { set } from 'react-native-reanimated';
-import DoneAnimation from '../components/DoneAnimation';
+import { useTheme } from 'react-native-paper';
 
 import apiUrl from '../constant/api';
 
@@ -41,6 +40,8 @@ const Trips = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [fetching, setFetching] = useState(true);
 
+  const paperTheme = useTheme();
+
   async function fetchToken() {
     let token = await AsyncStorage.getItem('token');
     return token;
@@ -49,35 +50,32 @@ const Trips = () => {
   async function fetchTrips() {
     setRefreshing(true);
     var token = () => fetchToken();
-    const configGetTrip = {
-      method: 'get',
-      url: apiUrl + '/tripSummery/',
 
-      headers: token ? { Authorization: `Token ${token}` } : null,
-    };
-
-    await axios(configGetTrip)
+    await axios
+      .get(apiUrl + '/tripSummery/', {
+        headers: token ? { Authorization: `Token ${token}` } : null,
+      })
       .then(function (response) {
         setTrips(response.data.results);
         setHaveNext(response.data.next ? true : false);
-        setRefreshing(false);
       })
       .catch(function (error) {
         console.log(error);
       });
+    setRefreshing(false);
   }
 
   function fetchMoreTrips() {
     var token = () => fetchToken();
 
-    const configGetTrip = {
-      method: 'get',
-      url: apiUrl + '/tripSummery/?page=' + pageOffset,
-
-      headers: token ? { Authorization: `Token ${token}` } : null,
-    };
-
-    axios(configGetTrip)
+    axios
+      .get(
+        apiUrl + '/tripSummery/?page=' + pageOffset,
+        {},
+        {
+          headers: token ? { Authorization: `Token ${token}` } : null,
+        },
+      )
       .then(function (response) {
         setFetching(true);
 
@@ -115,8 +113,13 @@ const Trips = () => {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          progressBackgroundColor={colors.accent}
-          tintColor={colors.accent}
+          progressBackgroundColor={
+            paperTheme.dark ? 'white' : 'black'
+          }
+          tintColor={paperTheme.dark ? 'white' : 'black'}
+          title="Refresh"
+          titleColor={paperTheme.dark ? 'white' : 'black'}
+          progressViewOffset={30}
         />
       }
     >
@@ -134,7 +137,7 @@ const Trips = () => {
       {fetching && haveNext ? (
         <ActivityIndicator
           animating={true}
-          color={colors.accent}
+          color={paperTheme.dark ? 'white' : 'black'}
           style={{ margin: 20 }}
         />
       ) : (
