@@ -24,9 +24,10 @@ const BottomTabNavigator = () => {
     <>
       <Tab.Navigator
         activeColor="#67B75F"
-        sceneAnimationEnabled="true"
+        sceneAnimationEnabled={true}
         initialRouteName="Trips"
-        shifting="true"
+        shifting={false} // hide title of inactive tab if true
+        labeled={true}
         //barStyle={{ backgroundColor: '#ffff' }}
       >
         <Tab.Screen
