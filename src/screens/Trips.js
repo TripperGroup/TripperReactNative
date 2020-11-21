@@ -114,10 +114,10 @@ const Trips = () => {
           refreshing={refreshing}
           onRefresh={onRefresh}
           progressBackgroundColor={
-            paperTheme.dark ? 'white' : 'black'
+            paperTheme.dark ? 'white' : '#e3ffe3'
           }
           tintColor={paperTheme.dark ? 'white' : 'black'}
-          title="Refresh"
+          title="Refreshing"
           titleColor={paperTheme.dark ? 'white' : 'black'}
           progressViewOffset={30}
         />
@@ -132,6 +132,7 @@ const Trips = () => {
           days={trip.trip_days}
           gender={trip.auther.gender}
           avatar={trip.auther.avatar}
+          picture={'https://picsum.photos/700'}
         />
       ))}
       {fetching && haveNext ? (

@@ -1,7 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { TextInput, Button, Text } from 'react-native-paper';
+import {
+  TextInput,
+  Button,
+  Text,
+  HelperText,
+} from 'react-native-paper';
 import Logo from '../components/IntroLogo';
 
 import {
@@ -41,10 +46,19 @@ const SignUp = ({ navigation }) => {
         returnKeyType="next"
         value={userName.value}
         onChangeText={setUserName}
-        // error={!!name.error}
-        // errorText={name.error}
         styles={styles.input}
+        error={signUpError.username}
       />
+      {signUpError.username ? (
+        <HelperText
+          type="error"
+          visible={signUpError.username ? true : false}
+        >
+          {signUpError.username
+            ? signUpError.username.toString()
+            : null}
+        </HelperText>
+      ) : null}
 
       <TextInput
         style={styles.input}
@@ -53,14 +67,21 @@ const SignUp = ({ navigation }) => {
         returnKeyType="next"
         value={email.value}
         onChangeText={setEmail}
-        error={!!email.error}
-        errorText={email.error}
         autoCapitalize="none"
         autoCompleteType="email"
         textContentType="emailAddress"
         keyboardType="email-address"
         styles={styles.input}
+        error={signUpError.email}
       />
+      {signUpError.email ? (
+        <HelperText
+          type="error"
+          visible={signUpError.email ? true : false}
+        >
+          {signUpError.email ? signUpError.email.toString() : null}
+        </HelperText>
+      ) : null}
 
       <TextInput
         style={styles.input}
@@ -69,11 +90,21 @@ const SignUp = ({ navigation }) => {
         returnKeyType="done"
         value={password.value}
         onChangeText={setPassword}
-        error={!!password.error}
-        errorText={password.error}
+        error={signUpError.password}
         secureTextEntry
         styles={styles.input}
       />
+      {signUpError.password ? (
+        <HelperText
+          type="error"
+          visible={signUpError.password ? true : false}
+        >
+          {signUpError.password
+            ? signUpError.password.toString()
+            : null}
+        </HelperText>
+      ) : null}
+
       <TextInput
         style={styles.input}
         mode="outlined"
@@ -81,13 +112,20 @@ const SignUp = ({ navigation }) => {
         returnKeyType="done"
         value={password.value}
         onChangeText={setPassword2}
-        error={!!password.error}
-        errorText={password.error}
+        error={signUpError.re_password}
         secureTextEntry
         styles={styles.input}
       />
-
-      <Text>{signUpError}</Text>
+      {signUpError.re_password ? (
+        <HelperText
+          type="error"
+          visible={signUpError.re_password ? true : false}
+        >
+          {signUpError.re_password
+            ? signUpError.re_password.toString()
+            : null}
+        </HelperText>
+      ) : null}
 
       <Button
         dark

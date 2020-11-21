@@ -8,7 +8,12 @@ import {
   Dimensions,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { TextInput, Button, Text } from 'react-native-paper';
+import {
+  TextInput,
+  Button,
+  Text,
+  HelperText,
+} from 'react-native-paper';
 import Logo from '../components/IntroLogo';
 import { AuthContext } from '../../App';
 import { StateContext } from '../../App';
@@ -19,7 +24,9 @@ const SignIn = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const { signIn, guestLogin } = useContext(AuthContext);
-  const { loadingIndicator, faild } = useContext(StateContext);
+  const { loadingIndicator, faild, signInError } = useContext(
+    StateContext,
+  );
 
   return (
     <ScrollView
@@ -43,14 +50,25 @@ const SignIn = ({ navigation }) => {
         value={userName.value}
         onChangeText={setUserName}
         //onChangeText={(text) => setEmail({ value: text, error: '' })}
-        //error={!!email.error}
-        //errorText={email.error}
+
         autoCapitalize="none"
         //autoCompleteType="email"
         //textContentType="emailAddress"
         keyboardType="default"
         autoCorrect={false}
+        error={signInError.username}
       />
+
+      {signInError.username ? (
+        <HelperText
+          type="error"
+          visible={signInError.username ? true : false}
+        >
+          {signInError.username
+            ? signInError.username.toString()
+            : null}
+        </HelperText>
+      ) : null}
 
       <TextInput
         mode="outlined"
@@ -60,7 +78,19 @@ const SignIn = ({ navigation }) => {
         value={password.value}
         onChangeText={setPassword}
         secureTextEntry
+        error={signInError.password}
       />
+
+      {signInError.password ? (
+        <HelperText
+          type="error"
+          visible={signInError.password ? true : false}
+        >
+          {signInError.password
+            ? signInError.password.toString()
+            : null}
+        </HelperText>
+      ) : null}
 
       <View style={styles.forgotPassword}>
         <TouchableOpacity onPress={() => navigation.navigate('')}>
@@ -77,7 +107,7 @@ const SignIn = ({ navigation }) => {
 
       <Button
         dark
-        loading={loadingIndicator}
+        loading={loadingIndicator ? true : false}
         mode="contained"
         onPress={() => {
           signIn(userName, password);

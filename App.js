@@ -89,6 +89,24 @@ const App = ({ navigation }) => {
             faild: false,
             isGuest: false,
           };
+
+        case 'SIGN_UP_ERR':
+          return {
+            ...prevState,
+            signUpError: action.errors,
+          };
+        case 'SIGN_IN_ERR':
+          return {
+            ...prevState,
+            signInError: action.errors,
+          };
+
+        case 'SIGN_UP_OK':
+          return {
+            ...prevState,
+            userToken: null,
+            // ...
+          };
       }
     },
     {
@@ -98,6 +116,8 @@ const App = ({ navigation }) => {
       loadingIndicator: false,
       faild: false,
       isGuest: false,
+      signUpError: [],
+      signInError: [],
     },
   );
 
@@ -160,11 +180,12 @@ const App = ({ navigation }) => {
               dispatch({ type: 'SIGN_IN', token: token });
             })
             .catch((error) => {
-              dispatch({ type: 'FAILD', error: error });
               console.log(error);
               if (error.response) {
                 console.log(error.response.data);
                 let err = error.response.data;
+                dispatch({ type: 'SIGN_IN_ERR', errors: err });
+                dispatch({ type: 'FAILD' });
               }
             });
         //await AsyncStorage.setItem('token', token);
@@ -208,6 +229,7 @@ const App = ({ navigation }) => {
             console.log(error);
             if (error.response) {
               let err = error.response.data;
+              dispatch({ type: 'SIGN_UP_ERR', errors: err });
               console.log(err);
             }
           });

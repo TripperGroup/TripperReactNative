@@ -118,7 +118,7 @@ const TripCard = (props) => {
         left={() => LeftContent(props.avatar, props.gender)}
         right={RighContent}
       />
-      <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+      <Card.Cover source={{ uri: props.picture }} />
 
       <Card.Content style={{ padding: 10 }}>
         <View
