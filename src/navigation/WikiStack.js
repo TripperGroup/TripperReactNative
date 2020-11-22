@@ -29,7 +29,7 @@ export const Header = ({ scene, previous, navigation }) => {
   return (
     <>
       <Appbar.Header statusBarHeight={STATUSBAR_HEIGHT}>
-        {previous ? ( // Work on that later to handle back button
+        {/* {previous ? ( // Work on that later to handle back button
           <Appbar.BackAction onPress={navigation.goBack} />
         ) : (
           <Appbar.Action
@@ -39,18 +39,18 @@ export const Header = ({ scene, previous, navigation }) => {
             }}
             style={{ opacity: 0.7 }}
           />
-        )}
+        )} */}
         <Appbar.Content
           style={{
             marginRight: 8,
           }}
           title={title}
         />
-        <Appbar.Action
+        {/* <Appbar.Action
           icon="magnify"
           onPress={() => searchHeaderRef.current.show()}
           style={{ opacity: 0.7 }}
-        />
+        /> */}
       </Appbar.Header>
       <SearchHeader
         ref={searchHeaderRef}

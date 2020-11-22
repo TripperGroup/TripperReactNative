@@ -48,11 +48,11 @@ export const Header = ({ scene, previous, navigation }) => {
             marginRight: 8,
           }}
         />
-        <Appbar.Action
+        {/* <Appbar.Action
           icon="magnify"
           onPress={() => searchHeaderRef.current.show()}
           style={{ opacity: 0.7 }}
-        />
+        /> */}
       </Appbar.Header>
       <SearchHeader
         ref={searchHeaderRef}

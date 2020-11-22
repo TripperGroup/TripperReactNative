@@ -24,7 +24,7 @@ export default function ProfileSetting(props) {
         <List.Subheader style={styles.sectionHeader}>
           Account
         </List.Subheader>
-        <List.Item
+        {/* <List.Item
           style={styles.item}
           title="Travel Status"
           description="Toggle travel status"
@@ -37,14 +37,14 @@ export default function ProfileSetting(props) {
               style={styles.rightContent}
             />
           )}
-        />
-        <List.Item
+        /> */}
+        {/* <List.Item
           style={styles.item}
           title="Edit Profile"
           left={() => (
             <List.Icon style={styles.icon} icon="account-edit" />
           )}
-        />
+        /> */}
         <List.Item
           style={styles.item}
           title="Log out"
@@ -71,14 +71,14 @@ export default function ProfileSetting(props) {
             />
           )}
         />
-        <List.Item
+        {/* <List.Item
           style={styles.item}
           title="Language"
           left={() => <List.Icon style={styles.icon} icon="web" />}
           right={() => <Text style={styles.rightContent2}> En </Text>}
-        />
+        /> */}
         {/* ----- */}
-        <List.Subheader style={styles.sectionHeader}>
+        {/* <List.Subheader style={styles.sectionHeader}>
           Danger zone
         </List.Subheader>
         <List.Item
@@ -91,7 +91,7 @@ export default function ProfileSetting(props) {
               icon="delete"
             />
           )}
-        />
+        /> */}
       </List.Section>
     </ScrollView>
   );

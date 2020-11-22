@@ -125,7 +125,7 @@ const SignIn = ({ navigation }) => {
         </TouchableOpacity>
         <Text> or </Text>
         <TouchableOpacity onPress={() => guestLogin()}>
-          <Text style={styles.link}>Guest tripper</Text>
+          <Text style={styles.link}>Login as a guest</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

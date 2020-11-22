@@ -74,11 +74,11 @@ const RighContent = () => {
           name={like ? 'heart' : 'heart-outline'}
         />
       </TouchableOpacity>
-      <MaterialIcon
+      {/* <MaterialIcon
         style={{ marginLeft: 5, opacity: 0.5 }}
         size={25}
         name="dots-vertical"
-      />
+      /> */}
     </View>
   );
 };
@@ -145,9 +145,9 @@ const TripCard = (props) => {
             })
           }
         >
-          <Text style={{ marginTop: 6, fontWeight: 'bold' }}>
+          {/* <Text style={{ marginTop: 6, fontWeight: 'bold' }}>
             More details ...
-          </Text>
+          </Text> */}
         </TouchableOpacity>
         <Card.Actions
           style={{

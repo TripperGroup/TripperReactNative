@@ -66,7 +66,7 @@ const BottomTabNavigator = () => {
           }}
         />
       </Tab.Navigator>
-      <Portal>
+      {/* <Portal>
         <FAB.Group
           open={open}
           color="#ffff"
@@ -95,7 +95,7 @@ const BottomTabNavigator = () => {
             }
           }}
         />
-      </Portal>
+      </Portal> */}
     </>
   );
 };

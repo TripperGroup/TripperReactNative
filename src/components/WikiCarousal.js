@@ -2,12 +2,16 @@ import React, { useRef, useState, useEffect } from 'react';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import {
   View,
-  Text,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
   Platform,
 } from 'react-native';
+import { Text } from 'react-native-paper';
+
+import axios from 'axios';
+
+import apiUrl from '../constant/api';
 
 const ENTRIES1 = [
   {
@@ -39,18 +43,29 @@ const ENTRIES1 = [
 const { width: screenWidth } = Dimensions.get('window');
 
 const WikiCarousal = (props) => {
-  const [entries, setEntries] = useState([]);
+  const [articles, setArticles] = useState([]);
   const carouselRef = useRef(null);
 
+  async function fetchArticles() {
+    await axios
+      .get(apiUrl + '/articles/', {})
+      .then(function (response) {
+        setArticles(response.data.results);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
-    setEntries(ENTRIES1);
+    fetchArticles();
   }, []);
 
   const renderItem = ({ item, index }, parallaxProps) => {
     return (
       <View style={styles.item}>
         <ParallaxImage
-          source={{ uri: item.illustration }}
+          source={{ uri: item.image }}
           containerStyle={styles.imageContainer}
           style={styles.image}
           parallaxFactor={0.4}
@@ -70,7 +85,7 @@ const WikiCarousal = (props) => {
         sliderWidth={screenWidth}
         sliderHeight={screenWidth}
         itemWidth={screenWidth - 60}
-        data={entries}
+        data={articles}
         renderItem={renderItem}
         hasParallaxImages={true}
       />

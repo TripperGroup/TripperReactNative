@@ -14,14 +14,6 @@ export default function Wiki() {
         <Text style={styles.sectionHeader}>Elected articles</Text>
         <WikiCarousal />
       </View>
-      <View>
-        <Text style={styles.sectionHeader}>Lonely planet</Text>
-        <WikiCarousal />
-      </View>
-      <View>
-        <Text style={styles.sectionHeader}>Categories</Text>
-        <WikiCarousal />
-      </View>
     </ScrollView>
   );
 }
