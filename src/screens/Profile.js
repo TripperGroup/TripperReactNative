@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
-import { Avatar, Text } from 'react-native-paper';
+import { Avatar, Text, Badge } from 'react-native-paper';
 import { AuthContext, StateContext } from '../../App';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { colors } from '../constant/theme';
+import UserLikes from '../components/UserLikes';
+import UserTrips from '../components/UserTrips';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -30,18 +32,24 @@ export default function Profile() {
           />
           <Text style={styles.username}> Mohammad Maso </Text>
           <View style={styles.data}>
-            <TouchableOpacity style={styles.statusdata}>
-              <Text>
-                <Text style={{ fontWeight: 'bold', marginRight: 3 }}>
-                  12
-                </Text>
-                <Text> </Text>
-                Trips
+            <Text>
+              <Text style={{ fontWeight: 'bold', marginRight: 3 }}>
+                12
               </Text>
-            </TouchableOpacity>
-
+              <Text> </Text>
+              Trips
+            </Text>
             <Text> · </Text>
-
+            <Badge
+              style={{
+                backgroundColor: colors.accent,
+                color: 'white',
+              }}
+            >
+              ON TRIP
+            </Badge>
+            {/* following and followers */}
+            {/* <Text> · </Text>
             <TouchableOpacity style={styles.statusdata}>
               <Text>
                 <Text style={{ fontWeight: 'bold', marginRight: 3 }}>
@@ -60,7 +68,7 @@ export default function Profile() {
                 <Text> </Text>
                 <Text>Following</Text>
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <Tab.Navigator
@@ -72,8 +80,8 @@ export default function Profile() {
             showIcon: true,
           }}
         >
-          <Tab.Screen name="Trips" component={test} />
-          <Tab.Screen name="Likes" component={test} />
+          <Tab.Screen name="Trips" component={UserTrips} />
+          <Tab.Screen name="Likes" component={UserLikes} />
         </Tab.Navigator>
       </ScrollView>
     );
