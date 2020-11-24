@@ -13,10 +13,12 @@ import {
   Button,
   Text,
   HelperText,
+  Snackbar,
 } from 'react-native-paper';
 import Logo from '../components/IntroLogo';
 import { AuthContext } from '../../App';
 import { StateContext } from '../../App';
+import { colors } from '../constant/theme';
 
 const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -24,9 +26,12 @@ const SignIn = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const { signIn, guestLogin } = useContext(AuthContext);
-  const { loadingIndicator, faild, signInError } = useContext(
-    StateContext,
-  );
+  const {
+    loadingIndicator,
+    faild,
+    signInError,
+    signedUpOk,
+  } = useContext(StateContext);
 
   return (
     <ScrollView
@@ -128,6 +133,15 @@ const SignIn = ({ navigation }) => {
           <Text style={styles.link}>Login as a guest</Text>
         </TouchableOpacity>
       </View>
+
+      <Snackbar
+        visible={signedUpOk}
+        onDismiss={() => {}}
+        duration={1000}
+        style={{ backgroundColor: colors.accent }}
+      >
+        🎉 Hoorey! Now you are a tripper.
+      </Snackbar>
     </ScrollView>
   );
 };

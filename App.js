@@ -50,7 +50,10 @@ const App = ({ navigation }) => {
             ...prevState,
             loadingIndicator: true,
             faild: false,
+            signUpError: [],
+            signInError: [],
           };
+
         case 'FAILD':
           return {
             ...prevState,
@@ -104,8 +107,14 @@ const App = ({ navigation }) => {
         case 'SIGN_UP_OK':
           return {
             ...prevState,
-            userToken: null,
-            // ...
+            loadingIndicator: false,
+            signedUpOk: true,
+          };
+
+        case 'STOP_LOADING':
+          return {
+            ...prevState,
+            loadingIndicator: false,
           };
       }
     },
@@ -115,9 +124,11 @@ const App = ({ navigation }) => {
       userToken: null,
       loadingIndicator: false,
       faild: false,
+
       isGuest: false,
       signUpError: [],
       signInError: [],
+      signedUpOk: false,
     },
   );
 
@@ -215,6 +226,7 @@ const App = ({ navigation }) => {
           );
       },
       signUp: async (name, email, password, password2) => {
+        dispatch({ type: 'REQUESTED' });
         axios
           .post(apiUrl + '/auth/users/', {
             username: name,
@@ -224,12 +236,15 @@ const App = ({ navigation }) => {
           })
           .then((res) => {
             console.log(res.data);
+            dispatch({ type: 'SIGN_UP_OK' });
           })
           .catch((error) => {
             console.log(error);
             if (error.response) {
               let err = error.response.data;
               dispatch({ type: 'SIGN_UP_ERR', errors: err });
+              dispatch({ type: 'FAILD' });
+
               console.log(err);
             }
           });

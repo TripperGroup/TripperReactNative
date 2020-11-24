@@ -6,6 +6,7 @@ import {
   Button,
   Text,
   HelperText,
+  Snackbar,
 } from 'react-native-paper';
 import Logo from '../components/IntroLogo';
 
@@ -14,16 +15,25 @@ import {
   passwordValidator,
   nameValidator,
 } from '../core/utils';
+
 import { AuthContext, StateContext } from '../../App';
+import { colors } from '../constant/theme';
 
 const SignUp = ({ navigation }) => {
   const { signUp } = useContext(AuthContext);
-  const { signUpError } = useContext(StateContext);
+  const { signUpError, loadingIndicator, faild } = useContext(
+    StateContext,
+  );
 
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+
+  const signingUP = () => {
+    signUp(userName, email, password, password2);
+    faild ? null : navigation.navigate('SignIn');
+  };
 
   return (
     <ScrollView
@@ -43,6 +53,7 @@ const SignUp = ({ navigation }) => {
         style={styles.input}
         mode="outlined"
         label="Username"
+        autoCapitalize="none"
         returnKeyType="next"
         value={userName.value}
         onChangeText={setUserName}
@@ -112,10 +123,20 @@ const SignUp = ({ navigation }) => {
         returnKeyType="done"
         value={password.value}
         onChangeText={setPassword2}
-        error={signUpError.re_password}
+        error={signUpError.non_field_errors}
         secureTextEntry
         styles={styles.input}
       />
+      {signUpError.non_field_errors ? (
+        <HelperText
+          type="error"
+          visible={signUpError.non_field_errors ? true : false}
+        >
+          {signUpError.non_field_errors
+            ? signUpError.non_field_errors.toString()
+            : null}
+        </HelperText>
+      ) : null}
       {signUpError.re_password ? (
         <HelperText
           type="error"
@@ -129,8 +150,9 @@ const SignUp = ({ navigation }) => {
 
       <Button
         dark
+        loading={loadingIndicator || !faild ? true : false}
         mode="contained"
-        onPress={() => signUp(userName, email, password, password2)}
+        onPress={signingUP}
         style={styles.button}
       >
         Sign Up
