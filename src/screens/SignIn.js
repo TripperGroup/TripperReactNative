@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import axios from 'react-native-axios';
 
 import {
   TouchableOpacity,

@@ -14,9 +14,10 @@ import { STATUSBAR_HEIGHT } from '../constant/Dimansions';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Shop from '../screens/Shop';
-
-import SearchHeader from 'react-native-search-header';
+import Shop from '../screens/shop/Shop';
+import Cart from '../screens/shop/Cart';
+import Checkout from '../screens/shop/Checkout';
+import Detail from '../screens/shop/Detail';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -25,8 +26,6 @@ MaterialCommunityIcons.loadFont();
 const Stack = createStackNavigator();
 
 export const Header = ({ scene, previous, navigation }) => {
-  const searchHeaderRef = React.useRef(null);
-
   const { options } = scene.descriptor;
   const title =
     options.headerTitle !== undefined
@@ -52,51 +51,7 @@ export const Header = ({ scene, previous, navigation }) => {
           }}
           title={title}
         />
-        <Appbar.Action
-          icon="magnify"
-          onPress={() => searchHeaderRef.current.show()}
-          style={{ opacity: 0.7 }}
-        />
       </Appbar.Header>
-      <SearchHeader
-        ref={searchHeaderRef}
-        placeholder="Search trips..."
-        placeholderColor="gray"
-        topOffset={36}
-        autoFocus={true}
-        visibleInitially={false}
-        persistent={false}
-        enableSuggestion={true}
-        style={{
-          header: {
-            height: 70,
-            backgroundColor: `#fdfdfd`,
-          },
-        }}
-        entryAnimation="from-left-side"
-        // pinnedSuggestions={[
-        //   `react-native-search-header`,
-        //   `react-native`,
-        //   `javascript`,
-        // ]}
-        onClear={() => {
-          console.log(`Clearing input!`);
-        }}
-        // onGetAutocompletions={async (text) => {
-        //   if (text) {
-        //     const response = await fetch(
-        //       `http://suggestqueries.google.com/complete/search?client=firefox&q=${text}`,
-        //       {
-        //         method: `get`,
-        //       },
-        //     );
-        //     const data = await response.json();
-        //     return data[1];
-        //   } else {
-        //     return [];
-        //   }
-        // }}
-      />
     </>
   );
 };
@@ -122,9 +77,19 @@ export default ShopStack = () => {
         options={{ headerTitle: 'Shop' }}
       />
       <Stack.Screen
-        name="Map"
-        component={Map}
-        options={{ headerTitle: 'Map' }}
+        name="Cart"
+        component={Cart}
+        options={{ headerTitle: 'Cart' }}
+      />
+      <Stack.Screen
+        name="Detail"
+        component={Detail}
+        options={{ headerTitle: 'Detail' }}
+      />
+      <Stack.Screen
+        name="Checkout"
+        component={Checkout}
+        options={{ headerTitle: 'Checkout' }}
       />
     </Stack.Navigator>
   );
