@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
@@ -21,18 +21,26 @@ import { colors } from '../constant/theme';
 
 const SignUp = ({ navigation }) => {
   const { signUp } = useContext(AuthContext);
-  const { signUpError, loadingIndicator, faild } = useContext(
-    StateContext,
-  );
+  const {
+    signUpError,
+    loadingIndicator,
+    faild,
+    signedUpOk,
+  } = useContext(StateContext);
 
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
 
+  useEffect(() => {
+    setTimeout(() => {
+      faild || !signedUpOk ? null : navigation.navigate('SignIn');
+    }, 1000);
+  }, [signedUpOk]);
+
   const signingUP = () => {
     signUp(userName, email, password, password2);
-    faild ? null : navigation.navigate('SignIn');
   };
 
   return (
@@ -150,7 +158,7 @@ const SignUp = ({ navigation }) => {
 
       <Button
         dark
-        loading={loadingIndicator || !faild ? true : false}
+        loading={loadingIndicator ? true : false}
         mode="contained"
         onPress={signingUP}
         style={styles.button}
@@ -166,6 +174,21 @@ const SignUp = ({ navigation }) => {
           <Text style={styles.link}>Login</Text>
         </TouchableOpacity>
       </View>
+
+      {/* <Snackbar
+        visible={okMessage}
+        onDismiss={() => setOkMessage(0)}
+        duration={1000}
+        //style={{ backgroundColor: colors.accent }}
+        action={{
+          label: 'Login',
+          onPress: () => {
+            navigation.navigate('SignIn');
+          },
+        }}
+      >
+        🎉 Hoorey! Now you are a tripper.
+      </Snackbar> */}
     </ScrollView>
   );
 };

@@ -59,6 +59,8 @@ const App = ({ navigation }) => {
             ...prevState,
             loadingIndicator: false,
             faild: true,
+            userToken: null,
+            signedUpOk: false,
           };
         case 'SIGN_IN':
           return {
@@ -109,12 +111,19 @@ const App = ({ navigation }) => {
             ...prevState,
             loadingIndicator: false,
             signedUpOk: true,
+            faild: false,
           };
 
         case 'STOP_LOADING':
           return {
             ...prevState,
             loadingIndicator: false,
+          };
+
+        case 'USER_ID':
+          return {
+            ...prevState,
+            userId: action.userId,
           };
       }
     },
@@ -124,11 +133,11 @@ const App = ({ navigation }) => {
       userToken: null,
       loadingIndicator: false,
       faild: false,
-
       isGuest: false,
       signUpError: [],
       signInError: [],
       signedUpOk: false,
+      userId: '',
     },
   );
 
@@ -155,22 +164,37 @@ const App = ({ navigation }) => {
       );
     };
 
-    // Fetch the token from storage then navigate to our appropriate place
+    // Fetch the token  from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
 
       try {
         userToken = await AsyncStorage.getItem('token');
       } catch (e) {
-        // Restoring token failed
+        console.log('Restoring token failed');
       }
 
       // After restoring token, we may need to validate it in production apps
 
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
+
+    // Fetch the id from storage
+    const bootstrapId = async () => {
+      let userId;
+      try {
+        userId = await AsyncStorage.getItem('userId');
+        console.log('user id is: ', userId);
+      } catch (e) {
+        console.log('Restoring id faild'); // maybe should navigate user to login again
+        dispatch({ type: 'FAILD' });
+      }
+      dispatch({ type: 'USER_ID', userId: userId });
+    };
+
     fetchTheme();
     bootstrapAsync();
+    bootstrapId();
   }, []);
 
   const authContext = useMemo(
@@ -178,29 +202,53 @@ const App = ({ navigation }) => {
       guestLogin: () => dispatch({ type: 'GUEST' }),
       guestToSignUp: () => dispatch({ type: 'NOTGUEST' }),
       requesting: () => dispatch({ type: 'REQUESTED' }),
-      signIn: async (username, password) => {
-        dispatch({ type: 'REQUESTED' }),
-          axios
-            .post(apiUrl + '/auth/token/login/', {
-              username,
-              password,
-            })
-            .then((response) => {
-              let token = response.data.auth_token;
-              AsyncStorage.setItem('token', token);
-              dispatch({ type: 'SIGN_IN', token: token });
-            })
-            .catch((error) => {
-              console.log(error);
-              if (error.response) {
-                console.log(error.response.data);
-                let err = error.response.data;
-                dispatch({ type: 'SIGN_IN_ERR', errors: err });
-                dispatch({ type: 'FAILD' });
-              }
-            });
-        //await AsyncStorage.setItem('token', token);
+
+      signIn: (username, password) => {
+        let token;
+        dispatch({ type: 'REQUESTED' });
+        axios
+          .post(apiUrl + '/auth/token/login/', {
+            username,
+            password,
+          })
+          .then((response) => {
+            token = response.data.auth_token;
+            AsyncStorage.setItem('token', token);
+            console.log(token);
+            dispatch({ type: 'SIGN_IN', token: token });
+            var myHeaders = new Headers();
+            myHeaders.append('Authorization', `Token ${token}`);
+
+            var requestOptions = {
+              method: 'GET',
+              headers: myHeaders,
+              redirect: 'follow',
+            };
+
+            fetch(apiUrl + '/auth/users/me/', requestOptions)
+              .then((response) => response.json())
+              .then((result) => {
+                let id = result.id.toString();
+                AsyncStorage.setItem('userId', id);
+                console.log(id);
+                dispatch({ type: 'USER_ID', userId: id });
+              })
+              .catch((error) => {
+                console.log('error fetching id: ', error),
+                  dispatch({ type: 'FAILD' });
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+            if (error.response) {
+              console.log(error.response.data);
+              let err = error.response.data;
+              dispatch({ type: 'SIGN_IN_ERR', errors: err });
+              dispatch({ type: 'FAILD' });
+            }
+          });
       },
+
       signOut: async () => {
         let token = await AsyncStorage.getItem('token');
         console.log(token);
@@ -222,10 +270,11 @@ const App = ({ navigation }) => {
           .catch(
             (error) => console.log(error),
             AsyncStorage.removeItem('token'),
+            AsyncStorage.removeItem('userId'),
             dispatch({ type: 'SIGN_OUT' }),
           );
       },
-      signUp: async (name, email, password, password2) => {
+      signUp: (name, email, password, password2) => {
         dispatch({ type: 'REQUESTED' });
         axios
           .post(apiUrl + '/auth/users/', {

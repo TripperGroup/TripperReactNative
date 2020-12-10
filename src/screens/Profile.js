@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,25 +12,62 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { colors } from '../constant/theme';
 import UserLikes from '../components/UserLikes';
 import UserTrips from '../components/UserTrips';
+import apiUrl from '../constant/api';
+import axios from 'axios';
+
+import manAvatar from '../../assets/man-avatar.jpg';
+import womanAvatar from '../../assets/woman-avatar.jpg';
 
 const Tab = createMaterialTopTabNavigator();
 
+const UserAvatar = (props) => {
+  return (
+    <Avatar.Image
+      size={100}
+      source={
+        props.avatar
+          ? {
+              uri: props.avatar,
+            }
+          : props.gender === 'WM'
+          ? womanAvatar
+          : manAvatar
+      }
+      style={styles.avatar}
+    />
+  );
+};
+
 export default function Profile() {
-  const test = () => {
-    return <Text></Text>;
-  };
-  const { signOut, guestToSignUp } = useContext(AuthContext);
-  const { isGuest } = useContext(StateContext);
+  const { guestToSignUp } = useContext(AuthContext);
+  const { isGuest, userId, userToken } = useContext(StateContext);
+
+  const [user, setUser] = useState('');
+
+  async function fetchUser() {
+    await axios
+      .get(apiUrl + '/users/' + userId + '/', {
+        headers: { Authorization: `Token ${userToken}` },
+      })
+      .then(function (response) {
+        setUser(response.data);
+        console.log(user);
+      })
+      .catch(function (error) {
+        console.log(error.response);
+      });
+  }
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   if (!isGuest) {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header}>
-          <Avatar.Image
-            size={120}
-            source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
-            style={styles.avatar}
-          />
-          <Text style={styles.username}> Mohammad Maso </Text>
+          <UserAvatar avatar={user.avatar} gender={user.gender} />
+          <Text style={styles.username}>{user.username}</Text>
           <View style={styles.data}>
             <Text>
               <Text style={{ fontWeight: 'bold', marginRight: 3 }}>
@@ -39,15 +76,19 @@ export default function Profile() {
               <Text> </Text>
               Trips
             </Text>
-            <Text> · </Text>
-            <Badge
-              style={{
-                backgroundColor: colors.accent,
-                color: 'white',
-              }}
-            >
-              ON TRIP
-            </Badge>
+            {user.trip_status ? (
+              <>
+                <Text> · </Text>
+                <Badge
+                  style={{
+                    backgroundColor: colors.accent,
+                    color: 'white',
+                  }}
+                >
+                  ON TRIP
+                </Badge>
+              </>
+            ) : null}
             {/* following and followers */}
             {/* <Text> · </Text>
             <TouchableOpacity style={styles.statusdata}>

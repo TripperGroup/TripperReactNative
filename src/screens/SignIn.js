@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'react-native-axios';
 
 import {
@@ -24,6 +24,8 @@ const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {}, [signedUpOk]);
 
   const { signIn, guestLogin } = useContext(AuthContext);
   const {
@@ -137,8 +139,8 @@ const SignIn = ({ navigation }) => {
       <Snackbar
         visible={signedUpOk}
         onDismiss={() => {}}
-        duration={1000}
-        style={{ backgroundColor: colors.accent }}
+        duration={4000}
+        //style={{ backgroundColor: colors.accent }}
       >
         🎉 Hoorey! Now you are a tripper.
       </Snackbar>
