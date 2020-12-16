@@ -66,7 +66,7 @@ const BottomTabNavigator = () => {
           }}
         />
       </Tab.Navigator>
-      {/* <Portal>
+      <Portal>
         <FAB.Group
           open={open}
           color="#ffff"
@@ -80,13 +80,18 @@ const BottomTabNavigator = () => {
             {
               icon: 'fountain-pen-tip',
               label: 'Write Travelogue',
-              onPress: () => console.log('Pressed email'),
+              onPress: () => console.log('Write Travelogue'),
             },
             {
-              icon: 'crosshairs-gps',
-              label: 'New GPS recording',
-              onPress: () => console.log('Pressed notifications'),
+              icon: 'file-outline',
+              label: 'Write Article',
+              onPress: () => console.log('Pressed email'),
             },
+            // {
+            //   icon: 'crosshairs-gps',
+            //   label: 'New GPS recording',
+            //   onPress: () => console.log('New GPS recording'),
+            // },
           ]}
           onStateChange={onStateChange}
           onPress={() => {
@@ -95,7 +100,7 @@ const BottomTabNavigator = () => {
             }
           }}
         />
-      </Portal> */}
+      </Portal>
     </>
   );
 };
