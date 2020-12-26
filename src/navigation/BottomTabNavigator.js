@@ -1,25 +1,14 @@
 import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { useTheme, Portal, FAB } from 'react-native-paper';
-import { useIsFocused } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import TripStack from './TripStack';
 import WikiStack from './WikiStack';
 import ShopStack from './ShopStack';
 import ProfileStack from './ProfileStack';
-import { colors } from '../constant/theme';
 
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabNavigator = () => {
-  const [state, setState] = React.useState({ open: false });
-
-  const onStateChange = ({ open }) => setState({ open });
-
-  const insets = useSafeAreaInsets();
-
-  const { open } = state;
   return (
     <>
       <Tab.Navigator
@@ -27,7 +16,7 @@ const BottomTabNavigator = () => {
         sceneAnimationEnabled={true}
         initialRouteName="Trips"
         shifting={false} // hide title of inactive tab if true
-        labeled={true}
+        //labeled={true}
         //barStyle={{ backgroundColor: '#ffff' }}
       >
         <Tab.Screen
@@ -66,41 +55,6 @@ const BottomTabNavigator = () => {
           }}
         />
       </Tab.Navigator>
-      <Portal>
-        <FAB.Group
-          open={open}
-          color="#ffff"
-          fabStyle={{ backgroundColor: colors.accent }}
-          style={{
-            position: 'absolute',
-            bottom: insets.bottom + 55,
-          }}
-          icon={open ? 'map-plus' : 'plus'}
-          actions={[
-            {
-              icon: 'fountain-pen-tip',
-              label: 'Write Travelogue',
-              onPress: () => console.log('Write Travelogue'),
-            },
-            {
-              icon: 'file-outline',
-              label: 'Write Article',
-              onPress: () => console.log('Pressed email'),
-            },
-            // {
-            //   icon: 'crosshairs-gps',
-            //   label: 'New GPS recording',
-            //   onPress: () => console.log('New GPS recording'),
-            // },
-          ]}
-          onStateChange={onStateChange}
-          onPress={() => {
-            if (open) {
-              // do something if the speed dial is open
-            }
-          }}
-        />
-      </Portal>
     </>
   );
 };

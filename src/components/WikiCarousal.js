@@ -7,78 +7,94 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, ActivityIndicator } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 import axios from 'axios';
 
-import apiUrl from '../constant/api';
+import { wordpressUrl } from '../constant/api';
+import { colors } from '../constant/theme';
+import { MaterialIcon } from './Icon';
 
-const ENTRIES1 = [
-  {
-    title: 'Beautiful and dramatic Antelope Canyon',
-    subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-    illustration: 'https://picsum.photos/700',
-  },
-  {
-    title: 'Earlier this morning, NYC',
-    subtitle: 'Lorem ipsum dolor sit amet',
-    illustration: 'https://picsum.photos/700',
-  },
-  {
-    title: 'White Pocket Sunset',
-    subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-    illustration: 'https://picsum.photos/700',
-  },
-  {
-    title: 'Acrocorinth, Greece',
-    subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-    illustration: 'https://picsum.photos/700',
-  },
-  {
-    title: 'The lone tree, majestic landscape of New Zealand',
-    subtitle: 'Lorem ipsum dolor sit amet',
-    illustration: 'https://picsum.photos/700',
-  },
-];
 const { width: screenWidth } = Dimensions.get('window');
 
 const WikiCarousal = (props) => {
+  const navigation = useNavigation();
+
   const [articles, setArticles] = useState([]);
+  const [category, setCategory] = useState('');
+  const [loading, setLoading] = useState(true);
+
   const carouselRef = useRef(null);
 
+  const source = axios.CancelToken.source();
+
   async function fetchArticles() {
+    if (props.category != null) {
+      setCategory('&categories=' + props.category);
+    }
     await axios
-      .get(apiUrl + '/articles/', {})
+      .get(
+        wordpressUrl + '/wp/v2/posts?_embed&per_page=10' + category,
+        { cancelToken: source.token },
+      )
       .then(function (response) {
-        setArticles(response.data.results);
+        setArticles(response.data);
+        setLoading(false);
       })
       .catch(function (error) {
         console.log(error);
+        setLoading(false);
       });
   }
 
   useEffect(() => {
     fetchArticles();
-  }, []);
+    return () => {
+      source.cancel('Wiki carousal got unmounted');
+    };
+  }, [category, articles]);
 
   const renderItem = ({ item, index }, parallaxProps) => {
     return (
       <View style={styles.item}>
         <ParallaxImage
-          source={{ uri: item.image }}
+          source={{
+            uri:
+              item._embedded['wp:featuredmedia'][0].media_details
+                .sizes.full.source_url,
+          }}
           containerStyle={styles.imageContainer}
           style={styles.image}
           parallaxFactor={0.4}
           {...parallaxProps}
         />
-        <Text style={styles.title} numberOfLines={2}>
-          {item.title}
-        </Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('WikiDetail', {
+              name: item.title.rendered,
+              id: item.id,
+            })
+          }
+        >
+          <Text style={styles.title} numberOfLines={1}>
+            {item.title.rendered}
+          </Text>
+          <Text style={styles.description}>
+            <MaterialIcon name="shape" />{' '}
+            {item._embedded['wp:term'][0][0].name} |{' '}
+            <MaterialIcon name="calendar-range" />{' '}
+            {item.date.substr(0, 10)}
+          </Text>
+          <Text style={styles.description}>Read more..</Text>
+        </TouchableOpacity>
       </View>
     );
   };
 
-  return (
+  return loading ? (
+    <ActivityIndicator animating={true} color={colors.accent} />
+  ) : (
     <View style={styles.container}>
       <Carousel
         ref={carouselRef}
@@ -115,6 +131,10 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 10,
-    fontWeight: '300',
+    fontWeight: '400',
+  },
+  description: {
+    marginTop: 5,
+    fontWeight: '200',
   },
 });

@@ -14,10 +14,12 @@ import { STATUSBAR_HEIGHT } from '../constant/Dimansions';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Shop from '../screens/shop/Shop';
-import Cart from '../screens/shop/Cart';
-import Checkout from '../screens/shop/Checkout';
-import Detail from '../screens/shop/Detail';
+import Shop from '../screens/Shop';
+import ShopCart from '../screens/ShopCart';
+import ShopCheckout from '../screens/ShopCheckout';
+import ShopDetail from '../screens/ShopDetail';
+
+import { useNavigation } from '@react-navigation/native';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -43,6 +45,9 @@ export const Header = ({ scene, previous, navigation }) => {
           <Appbar.Action
             icon="shopping-outline"
             style={{ opacity: 0.7 }}
+            onPress={() => {
+              navigation.navigate('ShopCart');
+            }}
           />
         )}
         <Appbar.Content
@@ -57,6 +62,8 @@ export const Header = ({ scene, previous, navigation }) => {
 };
 
 export default ShopStack = () => {
+  const navigation = useNavigation();
+
   return (
     <Stack.Navigator
       initialRouteName="Shop"
@@ -77,18 +84,21 @@ export default ShopStack = () => {
         options={{ headerTitle: 'Shop' }}
       />
       <Stack.Screen
-        name="Cart"
-        component={Cart}
+        name="ShopCart"
+        component={ShopCart}
         options={{ headerTitle: 'Cart' }}
       />
       <Stack.Screen
-        name="Detail"
-        component={Detail}
-        options={{ headerTitle: 'Detail' }}
+        name="ShopDetail"
+        component={ShopDetail}
+        options={({ route }) => ({
+          title: route.params.name,
+          id: route.params.id,
+        })}
       />
       <Stack.Screen
-        name="Checkout"
-        component={Checkout}
+        name="ShopCheckout"
+        component={ShopCheckout}
         options={{ headerTitle: 'Checkout' }}
       />
     </Stack.Navigator>

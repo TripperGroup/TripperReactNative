@@ -4,10 +4,18 @@ import { Appbar, Avatar, Text, Button } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { STATUSBAR_HEIGHT } from '../constant/Dimansions';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTheme, Portal, FAB } from 'react-native-paper';
+import { colors } from '../constant/theme';
 
 import Wiki from '../screens/Wiki';
+import WikiAddArticle from '../screens/WikiAddArticle';
 
-import SearchHeader from 'react-native-search-header';
+import WikiDetail from '../screens/WikiDetail';
+import WikiCategories from '../screens/WikiCategories';
+import WikiList from '../screens/WikiList';
+
+import { useNavigation } from '@react-navigation/native';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -16,8 +24,6 @@ MaterialCommunityIcons.loadFont();
 const Stack = createStackNavigator();
 
 export const Header = ({ scene, previous, navigation }) => {
-  const searchHeaderRef = React.useRef(null);
-
   const { options } = scene.descriptor;
   const title =
     options.headerTitle !== undefined
@@ -29,92 +35,115 @@ export const Header = ({ scene, previous, navigation }) => {
   return (
     <>
       <Appbar.Header statusBarHeight={STATUSBAR_HEIGHT}>
-        {/* {previous ? ( // Work on that later to handle back button
+        {previous ? ( // Work on this later to handle back button
           <Appbar.BackAction onPress={navigation.goBack} />
         ) : (
           <Appbar.Action
             icon="shape"
             onPress={() => {
-              navigation.navigate('Map');
+              navigation.navigate('WikiCategories');
             }}
             style={{ opacity: 0.7 }}
           />
-        )} */}
+        )}
         <Appbar.Content
           style={{
             marginRight: 8,
           }}
           title={title}
         />
-        {/* <Appbar.Action
-          icon="magnify"
-          onPress={() => searchHeaderRef.current.show()}
-          style={{ opacity: 0.7 }}
-        /> */}
       </Appbar.Header>
-      <SearchHeader
-        ref={searchHeaderRef}
-        placeholder="Search trips..."
-        placeholderColor="gray"
-        topOffset={36}
-        autoFocus={true}
-        visibleInitially={false}
-        persistent={false}
-        enableSuggestion={true}
-        style={{
-          header: {
-            height: 70,
-            backgroundColor: `#fdfdfd`,
-          },
-        }}
-        entryAnimation="from-left-side"
-        // pinnedSuggestions={[
-        //   `react-native-search-header`,
-        //   `react-native`,
-        //   `javascript`,
-        // ]}
-        onClear={() => {
-          console.log(`Clearing input!`);
-        }}
-        // onGetAutocompletions={async (text) => {
-        //   if (text) {
-        //     const response = await fetch(
-        //       `http://suggestqueries.google.com/complete/search?client=firefox&q=${text}`,
-        //       {
-        //         method: `get`,
-        //       },
-        //     );
-        //     const data = await response.json();
-        //     return data[1];
-        //   } else {
-        //     return [];
-        //   }
-        // }}
-      />
     </>
   );
 };
 
 export default WikiStack = () => {
+  const navigation = useNavigation();
+
+  const [state, setState] = React.useState({ open: false });
+
+  const onStateChange = ({ open }) => setState({ open });
+  const insets = useSafeAreaInsets();
+
+  const { open } = state;
+
   return (
-    <Stack.Navigator
-      initialRouteName="Trips"
-      headerMode="screen"
-      screenOptions={{
-        header: ({ scene, previous, navigation }) => (
-          <Header
-            scene={scene}
-            previous={previous}
-            navigation={navigation}
-          />
-        ),
-      }}
-    >
-      <Stack.Screen
-        name="Wiki"
-        component={Wiki}
-        options={{ headerTitle: 'Wiki' }}
-      />
-    </Stack.Navigator>
+    <>
+      <Stack.Navigator
+        initialRouteName="Wiki"
+        headerMode="screen"
+        screenOptions={{
+          header: ({ scene, previous, navigation }) => (
+            <Header
+              scene={scene}
+              previous={previous}
+              navigation={navigation}
+            />
+          ),
+        }}
+      >
+        <Stack.Screen
+          name="Wiki"
+          component={Wiki}
+          options={{ headerTitle: 'Wiki' }}
+        />
+        <Stack.Screen
+          name="WikiAddArticle"
+          component={WikiAddArticle}
+          options={{ headerTitle: 'Add Article' }}
+        />
+        <Stack.Screen
+          name="WikiCategories"
+          component={WikiCategories}
+          options={{ headerTitle: 'Article Categories' }}
+        />
+        <Stack.Screen
+          name="WikiList"
+          component={WikiList}
+          options={({ route }) => ({
+            title: route.params.name,
+            id: route.params.id,
+          })}
+        />
+        <Stack.Screen
+          name="WikiDetail"
+          component={WikiDetail}
+          options={({ route }) => ({
+            title: route.params.name,
+            id: route.params.id,
+          })}
+        />
+      </Stack.Navigator>
+      <Portal>
+        <FAB.Group
+          open={open}
+          color="#ffff"
+          fabStyle={{ backgroundColor: colors.accent }}
+          style={{
+            position: 'absolute',
+            bottom: insets.bottom + 55,
+          }}
+          icon={open ? 'map-plus' : 'plus'}
+          actions={[
+            {
+              icon: 'file-outline',
+              label: 'Write Article',
+              onPress: () => navigation.navigate('WikiAddArticle'),
+            },
+            // {
+            //   icon: 'crosshairs-gps',
+            //   label: 'New GPS recording',
+            //   onPress: () => console.log('New GPS recording'),
+            // },
+          ]}
+          onStateChange={onStateChange}
+          onPress={() => {
+            if (open) {
+              // do something if the speed dial is open
+            }
+          }}
+        />
+      </Portal>
+    </>
   );
 };

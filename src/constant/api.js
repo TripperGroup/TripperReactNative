@@ -20,3 +20,5 @@
 // };
 
 export default apiUrl = 'https://tripper1.herokuapp.com/api';
+
+export const wordpressUrl = 'https://trippergroup.ir/wp-json';

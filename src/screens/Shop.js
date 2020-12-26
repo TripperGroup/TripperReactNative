@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
-export default function Checkout({ navigation }) {
-  return <Text>mamd</Text>;
+export default function Shop({ navigation }) {
+  return <Text>Shop</Text>;
 }
 
 const styles = StyleSheet.create({});
