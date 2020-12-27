@@ -19,9 +19,12 @@ import { WebView } from 'react-native-webview';
 import HTML from 'react-native-render-html';
 
 import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+
 import { colors } from '../constant/theme';
 
 export default function WikiDetail() {
+  const navigation = useNavigation();
   const route = useRoute();
 
   const [article, setArticle] = useState([]);
@@ -86,6 +89,7 @@ export default function WikiDetail() {
       })
       .catch(function (error) {
         console.log(error);
+        navigation.goBack();
       });
   }
 
