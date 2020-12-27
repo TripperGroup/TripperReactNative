@@ -8,6 +8,7 @@ import {
   Portal,
   Modal,
   Provider,
+  FAB,
 } from 'react-native-paper';
 import { STATUSBAR_HEIGHT } from '../constant/Dimansions';
 
@@ -18,6 +19,7 @@ import Shop from '../screens/Shop';
 import ShopCart from '../screens/ShopCart';
 import ShopCheckout from '../screens/ShopCheckout';
 import ShopDetail from '../screens/ShopDetail';
+import ShopCategory from '../screens/ShopCategory';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -56,6 +58,15 @@ export const Header = ({ scene, previous, navigation }) => {
           }}
           title={title}
         />
+        {previous ? null : (
+          <Appbar.Action
+            icon="shape-outline"
+            style={{ opacity: 0.7 }}
+            onPress={() => {
+              navigation.navigate('ShopCategory');
+            }}
+          />
+        )}
       </Appbar.Header>
     </>
   );
@@ -65,42 +76,49 @@ export default ShopStack = () => {
   const navigation = useNavigation();
 
   return (
-    <Stack.Navigator
-      initialRouteName="Shop"
-      headerMode="screen"
-      screenOptions={{
-        header: ({ scene, previous, navigation }) => (
-          <Header
-            scene={scene}
-            previous={previous}
-            navigation={navigation}
-          />
-        ),
-      }}
-    >
-      <Stack.Screen
-        name="Shop"
-        component={Shop}
-        options={{ headerTitle: 'Shop' }}
-      />
-      <Stack.Screen
-        name="ShopCart"
-        component={ShopCart}
-        options={{ headerTitle: 'Cart' }}
-      />
-      <Stack.Screen
-        name="ShopDetail"
-        component={ShopDetail}
-        options={({ route }) => ({
-          title: route.params.name,
-          id: route.params.id,
-        })}
-      />
-      <Stack.Screen
-        name="ShopCheckout"
-        component={ShopCheckout}
-        options={{ headerTitle: 'Checkout' }}
-      />
-    </Stack.Navigator>
+    <>
+      <Stack.Navigator
+        initialRouteName="Shop"
+        headerMode="screen"
+        screenOptions={{
+          header: ({ scene, previous, navigation }) => (
+            <Header
+              scene={scene}
+              previous={previous}
+              navigation={navigation}
+            />
+          ),
+        }}
+      >
+        <Stack.Screen
+          name="Shop"
+          component={Shop}
+          options={{ headerTitle: 'Shop' }}
+        />
+        <Stack.Screen
+          name="ShopCart"
+          component={ShopCart}
+          options={{ headerTitle: 'Cart' }}
+        />
+        <Stack.Screen
+          name="ShopCategory"
+          component={ShopCategory}
+          options={{ headerTitle: 'Categories' }}
+        />
+        <Stack.Screen
+          name="ShopDetail"
+          component={ShopDetail}
+          options={({ route }) => ({
+            title: route.params.name,
+            id: route.params.id,
+          })}
+        />
+        <Stack.Screen
+          name="ShopCheckout"
+          component={ShopCheckout}
+          options={{ headerTitle: 'Checkout' }}
+        />
+      </Stack.Navigator>
+    </>
   );
 };

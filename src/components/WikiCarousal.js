@@ -73,7 +73,7 @@ const WikiCarousal = (props) => {
           onPress={() =>
             navigation.navigate('WikiDetail', {
               name: item.title.rendered,
-              id: item.id,
+              postId: item.id,
             })
           }
         >

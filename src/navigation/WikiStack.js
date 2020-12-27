@@ -102,7 +102,7 @@ export default WikiStack = () => {
           component={WikiList}
           options={({ route }) => ({
             title: route.params.name,
-            id: route.params.id,
+            postId: route.params.postId,
           })}
         />
         <Stack.Screen
@@ -110,7 +110,7 @@ export default WikiStack = () => {
           component={WikiDetail}
           options={({ route }) => ({
             title: route.params.name,
-            id: route.params.id,
+            postId: route.params.postId,
           })}
         />
       </Stack.Navigator>

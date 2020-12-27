@@ -24,7 +24,6 @@ import { colors } from '../constant/theme';
 export default function WikiDetail() {
   const route = useRoute();
 
-  const postId = JSON.stringify(route.params.id);
   const [article, setArticle] = useState([]);
   const [comments, setComments] = useState([]);
 
@@ -32,6 +31,8 @@ export default function WikiDetail() {
   const [thankMessage, setThankMessage] = useState(false);
 
   const onDismissThankMessage = () => setThankMessage(false);
+
+  const postId = JSON.stringify(route.params.postId);
 
   const onShare = async () => {
     try {
@@ -58,6 +59,7 @@ export default function WikiDetail() {
   const source = axios.CancelToken.source();
 
   async function fetchArticle() {
+    console.log('post id is ' + postId);
     await axios
       .get(wordpressUrl + '/wp/v2/posts/' + postId + '?_embed', {
         cancelToken: source.token,
@@ -90,25 +92,16 @@ export default function WikiDetail() {
   useEffect(() => {
     fetchArticle();
     fetchComments();
-
     return () => {
       source.cancel('WikiDetails got unmounted');
       source2.cancel('Comments got unmounted');
     };
-  }, [article, comments]);
+  }, []);
 
   return loading ? (
     <LoadingAnimation />
   ) : (
     <ScrollView>
-      <Image
-        source={{
-          uri: Object.values(
-            article._embedded['wp:featuredmedia'][0].media_details
-              .sizes.medium,
-          )[4],
-        }}
-      />
       <View style={{ flexDirection: 'row' }}>
         <Chip
           style={{
