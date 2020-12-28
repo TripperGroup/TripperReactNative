@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useReducer,
+  useMemo,
+  createContext,
+} from 'react';
 import { TouchableOpacity, Dimensions, View } from 'react-native';
 import {
   Appbar,
@@ -20,6 +25,7 @@ import ShopCart from '../screens/ShopCart';
 import ShopCheckout from '../screens/ShopCheckout';
 import ShopDetail from '../screens/ShopDetail';
 import ShopCategory from '../screens/ShopCategory';
+import ShopList from '../screens/ShopList';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -72,53 +78,97 @@ export const Header = ({ scene, previous, navigation }) => {
   );
 };
 
+// Should refactor and integrate to shop container
+export const ShoppingContex = createContext();
+export const ShopStateContext = createContext();
+
 export default ShopStack = () => {
   const navigation = useNavigation();
 
+  // Should refactor and integrate to shop container
+  const [shopState, dispatch] = useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'ADD_TO_CART':
+          return {
+            cart: [...prevState.cart, action.newItem],
+          };
+        case 'REMOVE_FROM_CART':
+          return {
+            ...prevState,
+            cart: prevState.cart.filter(
+              (item) => item.id !== action.item.id,
+            ),
+          };
+      }
+    },
+    {
+      cart: [],
+    },
+  );
+
+  const shoppingContex = useMemo(() => ({
+    addItemToCart: (item) =>
+      dispatch({ type: 'ADD_TO_CART', newItem: item }),
+
+    removeItemFromCart: (item) =>
+      dispatch({ type: 'REMOVE_FROM_CART', item: item }),
+  }));
+
   return (
-    <>
-      <Stack.Navigator
-        initialRouteName="Shop"
-        headerMode="screen"
-        screenOptions={{
-          header: ({ scene, previous, navigation }) => (
-            <Header
-              scene={scene}
-              previous={previous}
-              navigation={navigation}
-            />
-          ),
-        }}
-      >
-        <Stack.Screen
-          name="Shop"
-          component={Shop}
-          options={{ headerTitle: 'Shop' }}
-        />
-        <Stack.Screen
-          name="ShopCart"
-          component={ShopCart}
-          options={{ headerTitle: 'Cart' }}
-        />
-        <Stack.Screen
-          name="ShopCategory"
-          component={ShopCategory}
-          options={{ headerTitle: 'Categories' }}
-        />
-        <Stack.Screen
-          name="ShopDetail"
-          component={ShopDetail}
-          options={({ route }) => ({
-            title: route.params.name,
-            id: route.params.id,
-          })}
-        />
-        <Stack.Screen
-          name="ShopCheckout"
-          component={ShopCheckout}
-          options={{ headerTitle: 'Checkout' }}
-        />
-      </Stack.Navigator>
-    </>
+    <ShoppingContex.Provider value={shoppingContex}>
+      <ShopStateContext.Provider value={shopState}>
+        <Stack.Navigator
+          initialRouteName="Shop"
+          headerMode="screen"
+          screenOptions={{
+            header: ({ scene, previous, navigation }) => (
+              <Header
+                scene={scene}
+                previous={previous}
+                navigation={navigation}
+              />
+            ),
+          }}
+        >
+          <Stack.Screen
+            name="Shop"
+            component={Shop}
+            options={{ headerTitle: 'Shop' }}
+          />
+          <Stack.Screen
+            name="ShopList"
+            component={ShopList}
+            options={({ route }) => ({
+              title: route.params.name,
+              id: route.params.id,
+            })}
+          />
+          <Stack.Screen
+            name="ShopCart"
+            component={ShopCart}
+            options={{ headerTitle: 'Cart' }}
+          />
+          <Stack.Screen
+            name="ShopCategory"
+            component={ShopCategory}
+            options={{ headerTitle: 'Categories' }}
+          />
+          <Stack.Screen
+            name="ShopDetail"
+            component={ShopDetail}
+            options={({ route }) => ({
+              title: route.params.name,
+              id: route.params.id,
+            })}
+          />
+          <Stack.Screen
+            name="ShopCheckout"
+            component={ShopCheckout}
+            options={{ headerTitle: 'Checkout' }}
+          />
+        </Stack.Navigator>
+      </ShopStateContext.Provider>
+    </ShoppingContex.Provider>
   );
 };

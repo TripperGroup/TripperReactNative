@@ -2518,6 +2518,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+crypto-js@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
+  integrity sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==
+
 css-select@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/css-select/-/css-select-2.1.0.tgz#6a34653356635934a81baca68d0255432105dbef"
@@ -5714,6 +5719,11 @@ nwsapi@^2.2.0:
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.0.tgz#204879a9e3d068ff2a55139c2c772780681a38b7"
   integrity sha512-h2AatdwYH+JHiZpv7pt/gSX1XoRGb7L/qSIeuqA6GwYoF9w1vP1cw42TO0aI2pNyshRK5893hNSl+1//vHK7hQ==
 
+oauth-1.0a@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/oauth-1.0a/-/oauth-1.0a-2.2.6.tgz#eadbccdb3bceea412d24586e6f39b2b412f0e491"
+  integrity sha512-6bkxv3N4Gu5lty4viIcIAnq5GbxECviMBeKR3WX/q87SPQ8E8aursPZUtsXDnxCs787af09WPRBLqYrf/lwoYQ==
+
 oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
@@ -6392,6 +6402,15 @@ react-native-webview@^11.0.2:
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
+
+react-native-woocommerce-api@^1.8.5:
+  version "1.8.5"
+  resolved "https://registry.yarnpkg.com/react-native-woocommerce-api/-/react-native-woocommerce-api-1.8.5.tgz#7d3d1080ca57411726130d5d81902a5fff8d862d"
+  integrity sha512-7OmKFCMZMY7UnrnxTzgDAMDyodjCIS31ehP/AFQGI7x9vRor9wmmkANp4+rkFnvgG3802JgaGHApc+Y+3+0ntQ==
+  dependencies:
+    crypto-js "^3.3.0"
+    node-fetch "^2.6.0"
+    oauth-1.0a "^2.2.6"
 
 react-native@0.63.3:
   version "0.63.3"

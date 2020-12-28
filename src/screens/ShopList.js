@@ -1,3 +1,5 @@
+//need to refactor shopCard component
+
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -25,6 +27,8 @@ import { useNavigation } from '@react-navigation/native';
 import HTML from 'react-native-render-html';
 import { MaterialIcon } from '../components/Icon';
 import { colors } from '../constant/theme';
+
+import { useRoute } from '@react-navigation/native';
 
 const RighContent = (link, name) => {
   const onShare = async () => {
@@ -67,13 +71,18 @@ const RighContent = (link, name) => {
   );
 };
 
-export default function Shop() {
+export default function ShopList() {
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const categoryId = JSON.stringify(route.params.id);
 
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
 
-  const fetchProducts = ShopApi.get('products')
+  const fetchProducts = ShopApi.get('products', {
+    category: categoryId,
+  })
     .then((data) => {
       setProducts(data);
       setLoading(false);
@@ -86,6 +95,7 @@ export default function Shop() {
   useEffect(() => {
     () => fetchProducts;
   }, [products]);
+
   return loading ? (
     <ShopLoadingAnimation />
   ) : (
@@ -130,7 +140,7 @@ export default function Shop() {
                 onPress={() =>
                   navigation.navigate('ShopDetail', {
                     name: item.name,
-                    id: item.id,
+                    productId: item.id,
                   })
                 }
               >
