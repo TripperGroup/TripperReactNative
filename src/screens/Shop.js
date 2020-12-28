@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -25,6 +25,10 @@ import { useNavigation } from '@react-navigation/native';
 import HTML from 'react-native-render-html';
 import { MaterialIcon } from '../components/Icon';
 import { colors } from '../constant/theme';
+import {
+  ShopStateContext,
+  ShoppingContex,
+} from '../navigation/ShopStack';
 
 const RighContent = (link, name) => {
   const onShare = async () => {
@@ -68,6 +72,10 @@ const RighContent = (link, name) => {
 };
 
 export default function Shop() {
+  const { addItemToCart, removeItemFromCart } = useContext(
+    ShoppingContex,
+  );
+
   const navigation = useNavigation();
 
   const [loading, setLoading] = useState(true);
@@ -190,7 +198,7 @@ export default function Shop() {
                 disabled={
                   item.stock_status === 'instock' ? false : true
                 }
-                onPress={() => console.log('Pressed')}
+                onPress={() => addItemToCart(item)}
                 style={{ marginTop: 10 }}
                 color={colors.accent}
               >

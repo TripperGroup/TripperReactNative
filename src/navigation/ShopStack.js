@@ -95,9 +95,8 @@ export default ShopStack = () => {
           };
         case 'REMOVE_FROM_CART':
           return {
-            ...prevState,
             cart: prevState.cart.filter(
-              (item) => item.id !== action.item.id,
+              (item) => item.id != action.item,
             ),
           };
       }

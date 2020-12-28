@@ -1,6 +1,11 @@
 import React, { useContext } from 'react';
-import { StyleSheet, ScrollView, View } from 'react-native';
-import { Text, DataTable, Title } from 'react-native-paper';
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  TouchableOpacity,
+} from 'react-native';
+import { Text, DataTable, Title, Button } from 'react-native-paper';
 import { MaterialIcon } from '../components/Icon';
 import { colors } from '../constant/theme';
 
@@ -17,7 +22,7 @@ export default function ShopCart({ navigation }) {
 
   return (
     <ScrollView>
-      {cart ? (
+      {cart.length == 0 ? (
         <View
           style={{
             alignContent: 'center',
@@ -38,25 +43,48 @@ export default function ShopCart({ navigation }) {
           />
         </View>
       ) : (
-        <DataTable>
-          <DataTable.Header>
-            <DataTable.Title>Product</DataTable.Title>
-            <DataTable.Title numeric>Count</DataTable.Title>
-            <DataTable.Title numeric>Price</DataTable.Title>
-            <DataTable.Title numeric>Delete</DataTable.Title>
-          </DataTable.Header>
+        <View
+          style={{
+            margin: 5,
+          }}
+        >
+          <DataTable>
+            <DataTable.Header>
+              <DataTable.Title>Product</DataTable.Title>
+              <DataTable.Title numeric>Count</DataTable.Title>
+              <DataTable.Title numeric>Price</DataTable.Title>
+              <DataTable.Title numeric>Delete</DataTable.Title>
+            </DataTable.Header>
 
-          {cart.map((item) => (
-            <DataTable.Row key={item.id}>
-              <DataTable.Cell>{item.name}</DataTable.Cell>
-              <DataTable.Cell numeric>{item.price}</DataTable.Cell>
-              <DataTable.Cell numeric>6.0</DataTable.Cell>
-              <DataTable.Cell numeric>
-                <MaterialIcon name="delete-outline" size={20} />
-              </DataTable.Cell>
-            </DataTable.Row>
-          ))}
-        </DataTable>
+            {cart.map((item) => (
+              <DataTable.Row key={item.id}>
+                <DataTable.Cell>{item.name}</DataTable.Cell>
+                <DataTable.Cell numeric>1</DataTable.Cell>
+                <DataTable.Cell numeric>{item.price}$</DataTable.Cell>
+
+                <DataTable.Cell numeric>
+                  <TouchableOpacity
+                    onPress={() => removeItemFromCart(item.id)}
+                  >
+                    <MaterialIcon
+                      name="delete-outline"
+                      size={20}
+                      style={{ color: 'red', opacity: 0.7 }}
+                    />
+                  </TouchableOpacity>
+                </DataTable.Cell>
+              </DataTable.Row>
+            ))}
+          </DataTable>
+          <Button
+            dark
+            icon="credit-card-check-outline"
+            mode="contained"
+            color={colors.accent}
+          >
+            Check out
+          </Button>
+        </View>
       )}
     </ScrollView>
   );
