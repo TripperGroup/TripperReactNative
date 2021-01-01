@@ -23,6 +23,7 @@ const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [forgetPass, setForgetPass] = useState(false);
 
   useEffect(() => {}, [signedUpOk]);
 
@@ -99,7 +100,7 @@ const SignIn = ({ navigation }) => {
       ) : null}
 
       <View style={styles.forgotPassword}>
-        <TouchableOpacity onPress={() => navigation.navigate('')}>
+        <TouchableOpacity onPress={() => setForgetPass(true)}>
           <Text
             style={{
               marginTop: 10,
@@ -142,6 +143,15 @@ const SignIn = ({ navigation }) => {
         //style={{ backgroundColor: colors.accent }}
       >
         🎉 Hoorey! Now you are a tripper.
+      </Snackbar>
+
+      <Snackbar
+        visible={forgetPass}
+        onDismiss={() => setForgetPass(false)}
+        duration={2000}
+        //style={{ backgroundColor: colors.accent }}
+      >
+        ِYou should keep your eyes open :(
       </Snackbar>
     </ScrollView>
   );

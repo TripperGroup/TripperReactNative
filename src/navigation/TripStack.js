@@ -4,12 +4,17 @@ import { Appbar, Avatar, Text, Button } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { STATUSBAR_HEIGHT } from '../constant/Dimansions';
+import { useTheme, Portal, FAB } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors } from '../constant/theme';
 
 import Trips from '../screens/Trips';
 import Map from '../screens/Map';
 import TripDetail from '../screens/TripDetails';
 
 import SearchHeader from 'react-native-search-header';
+import { useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -98,35 +103,80 @@ export const Header = ({ scene, previous, navigation }) => {
 };
 
 export default TripStack = () => {
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  const [state, setState] = React.useState({ open: false });
+
+  const onStateChange = ({ open }) => setState({ open });
+  const insets = useSafeAreaInsets();
+
+  const { open } = state;
   return (
-    <Stack.Navigator
-      initialRouteName="Trips"
-      headerMode="screen"
-      screenOptions={{
-        header: ({ scene, previous, navigation }) => (
-          <Header
-            scene={scene}
-            previous={previous}
-            navigation={navigation}
-          />
-        ),
-      }}
-    >
-      <Stack.Screen
-        name="TripDetail"
-        component={TripDetail}
-        options={({ route }) => ({ title: route.params.name })}
-      />
-      <Stack.Screen
-        name="Trips"
-        component={Trips}
-        options={{ headerTitle: 'Trips' }}
-      />
-      <Stack.Screen
-        name="Map"
-        component={Map}
-        options={{ headerTitle: 'Map' }}
-      />
-    </Stack.Navigator>
+    <>
+      <Stack.Navigator
+        initialRouteName="Trips"
+        headerMode="screen"
+        screenOptions={{
+          header: ({ scene, previous, navigation }) => (
+            <Header
+              scene={scene}
+              previous={previous}
+              navigation={navigation}
+            />
+          ),
+        }}
+      >
+        <Stack.Screen
+          name="TripDetail"
+          component={TripDetail}
+          options={({ route }) => ({
+            title: route.params.name,
+            tripId: route.params.tripId,
+          })}
+        />
+        <Stack.Screen
+          name="Trips"
+          component={Trips}
+          options={{ headerTitle: 'Trips' }}
+        />
+        <Stack.Screen
+          name="Map"
+          component={Map}
+          options={{ headerTitle: 'Map' }}
+        />
+      </Stack.Navigator>
+      <Portal>
+        <FAB.Group
+          visible={isFocused}
+          open={open}
+          color="#ffff"
+          fabStyle={{ backgroundColor: colors.accent }}
+          style={{
+            position: 'absolute',
+            bottom: insets.bottom + 55,
+          }}
+          icon={open ? 'map-plus' : 'earth-plus'}
+          actions={[
+            {
+              icon: 'pencil-outline',
+              label: 'New travelogue',
+              onPress: () => navigation.navigate('WikiAddArticle'),
+            },
+            {
+              icon: 'crosshairs-gps',
+              label: 'New track',
+              onPress: () => console.log('New GPS recording'),
+            },
+          ]}
+          onStateChange={onStateChange}
+          onPress={() => {
+            if (open) {
+              // do something if the speed dial is open
+            }
+          }}
+        />
+      </Portal>
+    </>
   );
 };

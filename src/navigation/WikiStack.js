@@ -16,6 +16,7 @@ import WikiCategories from '../screens/WikiCategories';
 import WikiList from '../screens/WikiList';
 
 import { useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -59,6 +60,7 @@ export const Header = ({ scene, previous, navigation }) => {
 
 export default WikiStack = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const [state, setState] = React.useState({ open: false });
 
@@ -116,6 +118,7 @@ export default WikiStack = () => {
       </Stack.Navigator>
       <Portal>
         <FAB.Group
+          visible={isFocused}
           open={open}
           color="#ffff"
           fabStyle={{ backgroundColor: colors.accent }}
@@ -123,11 +126,11 @@ export default WikiStack = () => {
             position: 'absolute',
             bottom: insets.bottom + 55,
           }}
-          icon={open ? 'map-plus' : 'plus'}
+          icon={open ? 'map-plus' : 'fountain-pen-tip'}
           actions={[
             {
               icon: 'file-outline',
-              label: 'Write Article',
+              label: 'Write travelouge',
               onPress: () => navigation.navigate('WikiAddArticle'),
             },
             // {

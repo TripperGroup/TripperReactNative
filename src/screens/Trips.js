@@ -125,6 +125,7 @@ const Trips = () => {
     >
       {trips.map((trip) => (
         <TripCard
+          data={trip}
           key={trip.id}
           subject={trip.subject}
           description={trip.description}
@@ -132,7 +133,8 @@ const Trips = () => {
           days={trip.trip_days}
           gender={trip.auther.gender}
           avatar={trip.auther.avatar}
-          picture={'https://picsum.photos/700'}
+          picture={trip.image}
+          category={trip.category}
         />
       ))}
       {fetching && haveNext ? (

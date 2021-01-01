@@ -19,6 +19,6 @@
 //   headers: { Authorization: `Token ${token}` },
 // };
 
-export default apiUrl = 'https://tripper1.herokuapp.com/api';
+export default apiUrl = 'https://app.trippergroup.ir/api';
 
 export const wordpressUrl = 'https://trippergroup.ir/wp-json';

@@ -29,6 +29,7 @@ import {
   ShopStateContext,
   ShoppingContex,
 } from '../navigation/ShopStack';
+import axios from 'axios';
 
 const RighContent = (link, name) => {
   const onShare = async () => {
@@ -81,7 +82,11 @@ export default function Shop() {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
 
-  const fetchProducts = ShopApi.get('products')
+  const source = axios.CancelToken.source();
+
+  const fetchProducts = ShopApi.get('products', {
+    cancelToken: source.token,
+  })
     .then((data) => {
       setProducts(data);
       setLoading(false);
@@ -93,6 +98,9 @@ export default function Shop() {
 
   useEffect(() => {
     () => fetchProducts;
+    return () => {
+      source.cancel('Shop main got unmounted');
+    };
   }, [products]);
   return loading ? (
     <ShopLoadingAnimation />

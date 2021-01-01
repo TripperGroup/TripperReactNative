@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { colors } from '../constant/theme';
 import ShopLoadingAnimation from '../components/ShopLoadingAnimation';
 import ShopApi from '../constant/WooCommerce';
+import axios from 'axios';
 
 export default function ShopCategory() {
   const navigation = useNavigation();
@@ -21,7 +22,11 @@ export default function ShopCategory() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchCategories = ShopApi.get('products/categories')
+  const source = axios.CancelToken.source();
+
+  const fetchCategories = ShopApi.get('products/categories', {
+    cancelToken: source.token,
+  })
     .then((data) => {
       setCategories(data);
       setLoading(false);
@@ -33,6 +38,9 @@ export default function ShopCategory() {
 
   useEffect(() => {
     () => fetchCategories;
+    return () => {
+      source.cancel('Shop main got unmounted');
+    };
   }, [categories]);
   return loading ? (
     <ShopLoadingAnimation />

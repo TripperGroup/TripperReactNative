@@ -27,6 +27,7 @@ import { useNavigation } from '@react-navigation/native';
 import HTML from 'react-native-render-html';
 import { MaterialIcon } from '../components/Icon';
 import { colors } from '../constant/theme';
+import axios from 'axios';
 
 import { useRoute } from '@react-navigation/native';
 
@@ -39,7 +40,11 @@ export default function ShopList() {
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState([]);
 
-  const fetchProduct = ShopApi.get('products/' + productId, {})
+  const source = axios.CancelToken.source();
+
+  const fetchProduct = ShopApi.get('products/' + productId, {
+    cancelToken: source.token,
+  })
     .then((data) => {
       setProduct(data);
       setLoading(false);
@@ -51,6 +56,9 @@ export default function ShopList() {
 
   useEffect(() => {
     () => fetchProduct;
+    return () => {
+      source.cancel('Shop main got unmounted');
+    };
   }, [product]);
 
   return loading ? (

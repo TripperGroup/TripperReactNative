@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View } from 'react-native';
 import {
   Avatar,
@@ -12,9 +12,15 @@ import { MaterialIcon, ActivitieIcon } from '../components/Icon';
 import LottieView from 'lottie-react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 import manAvatar from '../../assets/man-avatar.jpg';
 import womanAvatar from '../../assets/woman-avatar.jpg';
+import apiUrl from '../constant/api';
+
+import { tripCategories } from '../constant/dataMap';
+
+import { StateContext } from '../../App';
 
 const cardSubTitle =
   'Mohammad' + ' · ' + 'Adventure ' + ' · ' + '10 Days';
@@ -35,15 +41,84 @@ const LeftContent = (avatar, gender) => (
   />
 );
 
-const RighContent = () => {
-  const [like, setLike] = useState(0);
+const RighContent = (props) => {
+  const { userId, userToken } = useContext(StateContext);
 
-  const animation = useRef();
+  const [like, setLike] = useState(false);
+
+  const [likeId, setLikeId] = useState(0);
 
   const toggleLike = () => {
     setLike(!like);
     // like ? null : animation.current.play();
   };
+  const likeFetchParams = {
+    user: userId,
+    trip: props.trip,
+  };
+
+  function fetchLike() {
+    axios
+      .get(apiUrl + '/likes/', {
+        params: likeFetchParams,
+      })
+      .then(function (response) {
+        setLike(response.data.count == 0 ? false : true);
+        setLikeId(response.data.results[0].id);
+        console.log(response.data.results[0].id);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  function postLike() {
+    axios
+      .post(
+        apiUrl + '/likes/',
+        {
+          user_id: userId,
+          trip_id: props.trip,
+        },
+        {
+          headers: { Authorization: `Token ${userToken}` },
+        },
+      )
+      .then(function (response) {
+        console.log('liked');
+      })
+      .catch(function (error) {
+        setLike(false);
+      });
+  }
+
+  function deleteLike(likeId) {
+    axios
+      .delete(apiUrl + '/likes/' + likeId + '/', {
+        headers: { Authorization: `Token ${userToken}` },
+      })
+      .then(function (response) {
+        console.log('unliked');
+      })
+      .catch(function (error) {
+        setLike(true);
+        console.log(error);
+      });
+  }
+
+  function likeAndUnlike() {
+    if (like) {
+      setLike(false);
+      deleteLike(likeId);
+    } else {
+      toggleLike();
+      postLike();
+    }
+  }
+
+  useEffect(() => {
+    fetchLike();
+  }, [like, likeId]);
 
   return (
     <View
@@ -60,9 +135,9 @@ const RighContent = () => {
           alignItems: 'center',
           justifyContent: 'center',
         }}
-        onPress={() => toggleLike()}
+        onPress={() => likeAndUnlike()}
       >
-        {/* <MaterialIcon
+        <MaterialIcon
           style={{
             opacity: 0.5,
             width: '100%',
@@ -72,13 +147,13 @@ const RighContent = () => {
           }}
           size={25}
           name={like ? 'heart' : 'heart-outline'}
-        /> */}
+        />
       </TouchableOpacity>
-      {/* <MaterialIcon
+      <MaterialIcon
         style={{ marginLeft: 5, opacity: 0.5 }}
         size={25}
         name="dots-vertical"
-      /> */}
+      />
     </View>
   );
 };
@@ -113,12 +188,20 @@ const TripCard = (props) => {
                 : props.days == 0
                 ? 'Less than a day'
                 : 'a day')
-            : '')
+            : '') +
+          ' • ' +
+          tripCategories[props.category]
         }
         left={() => LeftContent(props.avatar, props.gender)}
-        right={RighContent}
+        right={() => <RighContent trip={props.data.id} />}
       />
-      <Card.Cover source={{ uri: props.picture }} />
+      <Card.Cover
+        source={
+          props.picture != null
+            ? { uri: props.picture }
+            : require('../../assets/placeholder.jpg')
+        }
+      />
 
       <Card.Content style={{ padding: 10 }}>
         <View
@@ -129,19 +212,23 @@ const TripCard = (props) => {
             opacity: 0.7,
           }}
         >
-          <ActivitieIcon name="1" size={30} />
-          <ActivitieIcon name="20" size={30} />
-          <ActivitieIcon name="3" size={30} />
-          <ActivitieIcon name="38" size={30} />
-          <ActivitieIcon name="31" size={30} />
-          <ActivitieIcon name="108" size={30} />
+          {props.data.activities.map((index) => (
+            <ActivitieIcon
+              key={index}
+              name={index.toString()}
+              size={30}
+            />
+          ))}
         </View>
 
-        <Paragraph>{props.description}</Paragraph>
+        <Paragraph>
+          {props.description.substring(0, 100)}...
+        </Paragraph>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('TripDetail', {
               name: props.subject,
+              tripId: props.data.id,
             })
           }
         >
