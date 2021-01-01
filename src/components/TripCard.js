@@ -64,8 +64,9 @@ const RighContent = (props) => {
       })
       .then(function (response) {
         setLike(response.data.count == 0 ? false : true);
-        setLikeId(response.data.results[0].id);
-        console.log(response.data.results[0].id);
+        if (response.data.count != 0) {
+          setLikeId(response.data.results[0].id);
+        }
       })
       .catch(function (error) {
         console.log(error);

@@ -7,7 +7,7 @@ export const MaterialIcon = (props) => {
   const paperTheme = useTheme();
   return (
     <MaterialCommunityIcons
-      color={paperTheme.dark ? 'white' : null}
+      color={paperTheme.dark ? 'white' : 'black'}
       {...props}
     />
   );

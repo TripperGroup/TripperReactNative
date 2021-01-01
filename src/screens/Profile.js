@@ -41,6 +41,7 @@ const UserAvatar = (props) => {
 export default function Profile() {
   const { guestToSignUp } = useContext(AuthContext);
   const { isGuest, userId, userToken } = useContext(StateContext);
+  const [tripCount, setTripCount] = useState(0);
 
   const [user, setUser] = useState('');
 
@@ -51,15 +52,34 @@ export default function Profile() {
       })
       .then(function (response) {
         setUser(response.data);
-        console.log(user);
       })
       .catch(function (error) {
         console.log(error.response);
       });
   }
 
+  async function fetchTripCount() {
+    await axios
+      .get(
+        apiUrl + '/tripSummery/',
+        { params: { user: userId } },
+        {
+          headers: userToken
+            ? { Authorization: `Token ${userToken}` }
+            : null,
+        },
+      )
+      .then(function (response) {
+        setTripCount(response.data.count);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
     fetchUser();
+    fetchTripCount();
   }, []);
 
   if (!isGuest) {
@@ -71,7 +91,7 @@ export default function Profile() {
           <View style={styles.data}>
             <Text>
               <Text style={{ fontWeight: 'bold', marginRight: 3 }}>
-                12
+                {tripCount}
               </Text>
               <Text> </Text>
               Trips
@@ -89,6 +109,7 @@ export default function Profile() {
                 </Badge>
               </>
             ) : null}
+
             {/* following and followers */}
             {/* <Text> · </Text>
             <TouchableOpacity style={styles.statusdata}>
@@ -111,6 +132,7 @@ export default function Profile() {
               </Text>
             </TouchableOpacity> */}
           </View>
+          <Text style={{ alignSelf: 'center' }}>{user.about}</Text>
         </View>
         <Tab.Navigator
           backBehavior="history"

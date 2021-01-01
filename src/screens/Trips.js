@@ -33,7 +33,7 @@ const isCloseToBottom = ({
   );
 };
 
-const Trips = () => {
+const Trips = (props) => {
   const [trips, setTrips] = useState([]);
   const [pageOffset, setPageOffset] = useState(1);
   const [haveNext, setHaveNext] = useState(true);

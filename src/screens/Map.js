@@ -29,12 +29,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const styles1 = {
-  icon: {
-    iconImage: pinIcon,
-  },
-};
-
 export default function Map() {
   const navigation = useNavigation();
 
@@ -52,6 +46,15 @@ export default function Map() {
         console.log(error);
       });
   }
+
+  const styles1 = {
+    icon: {
+      iconImage: pinIcon,
+    },
+    text: {
+      textField: 'mamad',
+    },
+  };
 
   // function fetchPoints(trips) {
   //   //shoud refactor and migrate to server proccess. average of all points.
@@ -108,6 +111,16 @@ export default function Map() {
                   })
                 }
               >
+                <MapboxGL.SymbolLayer
+                  id={item.id.toString() + 'text'}
+                  style={{
+                    textField: item.subject,
+                    textColor: 'green',
+                    textHaloColor: 'white',
+                    textHaloWidth: 1,
+                    textSize: 25,
+                  }}
+                />
                 <MapboxGL.SymbolLayer
                   id={item.id + 'icon'}
                   style={styles1.icon}
