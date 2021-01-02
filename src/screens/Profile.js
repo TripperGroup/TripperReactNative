@@ -80,7 +80,7 @@ export default function Profile() {
   useEffect(() => {
     fetchUser();
     fetchTripCount();
-  }, []);
+  }, [user]);
 
   if (!isGuest) {
     return (

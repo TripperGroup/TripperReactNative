@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, Dimensions } from 'react-native';
+import { TouchableOpacity, Dimensions, Linking } from 'react-native';
 import { Appbar, Avatar, Text, Button } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -59,6 +59,20 @@ export const Header = ({ scene, previous, navigation }) => {
 };
 
 export default WikiStack = () => {
+  const openWikiAdmin = () => {
+    Linking.canOpenURL('https://tripperwiki.netlify.app/#/').then(
+      (supported) => {
+        if (supported) {
+          Linking.openURL('https://tripperwiki.netlify.app/#/');
+        } else {
+          console.log(
+            "Don't know how to open URI: " + this.props.url,
+          );
+        }
+      },
+    );
+  };
+
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
@@ -132,6 +146,11 @@ export default WikiStack = () => {
               icon: 'file-outline',
               label: 'Write travelouge',
               onPress: () => navigation.navigate('WikiAddArticle'),
+            },
+            {
+              icon: 'shield-account',
+              label: 'Wiki Admin (Approved authors)',
+              onPress: () => openWikiAdmin(),
             },
             // {
             //   icon: 'crosshairs-gps',

@@ -21,7 +21,7 @@
     "@react-navigation/native": "^5.7.6",
     "@react-navigation/stack": "^5.9.3",
     "axios": "^0.21.0",
-    "formik": "^2.2.5",
+    "formik": "^2.2.6",
     "lottie-ios": "3.1.8",
     "lottie-react-native": "^3.5.0",
     "react": "16.13.1",
@@ -44,7 +44,8 @@
     "react-native-woocommerce-api": "^1.8.5",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

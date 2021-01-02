@@ -11,6 +11,8 @@ import { colors } from '../constant/theme';
 import Trips from '../screens/Trips';
 import Map from '../screens/Map';
 import TripDetail from '../screens/TripDetails';
+import TripAdd from '../screens/TripAdd';
+import TripAddTrack from '../screens/TripAddTrack';
 
 import SearchHeader from 'react-native-search-header';
 import { useNavigation } from '@react-navigation/native';
@@ -141,6 +143,16 @@ export default TripStack = () => {
           options={{ headerTitle: 'Trips' }}
         />
         <Stack.Screen
+          name="TripAdd"
+          component={TripAdd}
+          options={{ headerTitle: 'New travelogue' }}
+        />
+        <Stack.Screen
+          name="TripAddTrack"
+          component={TripAddTrack}
+          options={{ headerTitle: 'New track' }}
+        />
+        <Stack.Screen
           name="Map"
           component={Map}
           options={{ headerTitle: 'Map' }}
@@ -161,12 +173,12 @@ export default TripStack = () => {
             {
               icon: 'pencil-outline',
               label: 'New travelogue',
-              onPress: () => navigation.navigate('WikiAddArticle'),
+              onPress: () => navigation.navigate('TripAdd'),
             },
             {
               icon: 'crosshairs-gps',
               label: 'New track',
-              onPress: () => console.log('New GPS recording'),
+              onPress: () => navigation.navigate('TripAddTrack'),
             },
           ]}
           onStateChange={onStateChange}

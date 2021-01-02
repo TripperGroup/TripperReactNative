@@ -57,8 +57,8 @@ const RighContent = (props) => {
     trip: props.trip,
   };
 
-  function fetchLike() {
-    axios
+  async function fetchLike() {
+    await axios
       .get(apiUrl + '/likes/', {
         params: likeFetchParams,
       })
@@ -73,8 +73,8 @@ const RighContent = (props) => {
       });
   }
 
-  function postLike() {
-    axios
+  async function postLike() {
+    await axios
       .post(
         apiUrl + '/likes/',
         {
@@ -93,8 +93,8 @@ const RighContent = (props) => {
       });
   }
 
-  function deleteLike(likeId) {
-    axios
+  async function deleteLike(likeId) {
+    await axios
       .delete(apiUrl + '/likes/' + likeId + '/', {
         headers: { Authorization: `Token ${userToken}` },
       })
@@ -112,14 +112,14 @@ const RighContent = (props) => {
       setLike(false);
       deleteLike(likeId);
     } else {
-      toggleLike();
+      setLike(true);
       postLike();
     }
   }
 
   useEffect(() => {
     fetchLike();
-  }, [like, likeId]);
+  }, []);
 
   return (
     <View

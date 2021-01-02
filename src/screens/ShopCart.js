@@ -81,6 +81,7 @@ export default function ShopCart({ navigation }) {
             icon="credit-card-check-outline"
             mode="contained"
             color={colors.accent}
+            onPress={() => navigation.navigate('ShopCheckout')}
           >
             Check out
           </Button>

@@ -22,3 +22,5 @@
 export default apiUrl = 'https://app.trippergroup.ir/api';
 
 export const wordpressUrl = 'https://trippergroup.ir/wp-json';
+
+export const wordpressBaseUrl = 'https://trippergroup.ir';

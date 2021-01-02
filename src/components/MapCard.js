@@ -46,26 +46,18 @@ export default function MapCard(props) {
   function fetchPoint() {
     //shoud refactor and migrate to server proccess. average of all points.
     var json;
-    if (props.data.geo_json != null) {
-      var config = {
-        method: 'get',
-        url: props.data.geo_json,
-        headers: {},
-      };
-      axios(config)
-        .then(function (response) {
-          json = JSON.stringify(response.data);
-          json = JSON.parse(json);
-          json = json['features'][0]['geometry']['coordinates'][0];
-          setPoint(json);
-        })
-        .catch(function (error) {
-          console.log('map fetching' + error);
-          setPoint([0, 0]);
-        });
-    } else {
-      setPoint([0, 0]);
-    }
+    axios
+      .get(props.data.geo_json, {})
+      .then(function (response) {
+        json = JSON.stringify(response.data);
+        json = JSON.parse(json);
+        json = json['features'][0]['geometry']['coordinates'][0];
+        setPoint(json);
+      })
+      .catch(function (error) {
+        console.log('map fetching' + error);
+        setPoint([0, 0]);
+      });
 
     // return json.features[0].geometry.coordinates;
   }

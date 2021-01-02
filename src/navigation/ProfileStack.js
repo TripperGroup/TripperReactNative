@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import Profile from '../screens/Profile';
 import ProfileSetting from '../screens/ProfileSetting';
+import ProfileEdit from '../screens/ProfileEdit';
 
 import SearchHeader from 'react-native-search-header';
 
@@ -71,6 +72,11 @@ export default ProfileStack = () => {
         name="Profile"
         component={Profile}
         options={{ headerTitle: 'Profile' }}
+      />
+      <Stack.Screen
+        name="ProfileEdit"
+        component={ProfileEdit}
+        options={{ headerTitle: 'Edit Profile' }}
       />
       <Stack.Screen
         name="Setting"

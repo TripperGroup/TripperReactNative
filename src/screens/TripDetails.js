@@ -38,17 +38,9 @@ export default function TripDetails() {
 
   const tripId = route.params.tripId;
 
-  async function fetchToken() {
-    let token = await AsyncStorage.getItem('token');
-    return token;
-  }
-
   async function fetchTrip() {
-    var token = () => fetchToken();
     await axios
-      .get(apiUrl + '/trip/' + tripId, {
-        headers: token ? { Authorization: `Token ${token}` } : null,
-      })
+      .get(apiUrl + '/trip/' + tripId, {})
       .then(function (response) {
         setTrip(response.data);
         setFetching(false);

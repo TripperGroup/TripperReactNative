@@ -1,14 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { List, Switch, Text, useTheme } from 'react-native-paper';
-import { ThemeContext, AuthContext } from '../../App';
+import { ThemeContext, AuthContext, StateContext } from '../../App';
 import AsyncStorage from '@react-native-community/async-storage';
 import { colors } from '../constant/theme';
+import apiUrl from '../constant/api';
+import axios from 'axios';
 
-export default function ProfileSetting(props) {
+export default function ProfileSetting({ navigation }, props) {
   const paperTheme = useTheme();
   const [isDarkTheme, setIsDarkTheme] = useContext(ThemeContext);
   const { signOut } = useContext(AuthContext);
+  const [inTravel, setInTravel] = useState(true);
+
+  const { userId, userToken } = useContext(StateContext);
 
   const changeAndSaveThemeState = async () => {
     await AsyncStorage.setItem(
@@ -17,6 +22,40 @@ export default function ProfileSetting(props) {
     );
     await setIsDarkTheme(!isDarkTheme);
   };
+
+  const fetchTripStatus = async () => {
+    await axios
+      .get(apiUrl + '/users/' + userId + '/', {
+        headers: { Authorization: `Token ${userToken}` },
+      })
+      .then(function (response) {
+        setInTravel(response.data.trip_status);
+      })
+      .catch(function (error) {
+        console.log(error.response);
+      });
+  };
+
+  const changeTravelStatus = async () => {
+    await axios
+      .patch(
+        apiUrl + '/users/' + userId + '/',
+        {
+          trip_status: !inTravel,
+        },
+        {
+          headers: { authorization: `Token ${userToken}` },
+        },
+      )
+      .then(() => {
+        setInTravel(!inTravel);
+      });
+  };
+
+  useEffect(() => {
+    fetchTripStatus();
+    return () => {};
+  }, []);
 
   return (
     <ScrollView>
@@ -45,6 +84,29 @@ export default function ProfileSetting(props) {
             <List.Icon style={styles.icon} icon="account-edit" />
           )}
         /> */}
+        <List.Item
+          style={styles.item}
+          title="Change Trip Status"
+          left={() => (
+            <List.Icon style={styles.icon} icon="wallet-travel" />
+          )}
+          right={() => (
+            <Switch
+              color={isDarkTheme ? colors.accent : null}
+              value={inTravel}
+              style={styles.rightContent}
+              onValueChange={() => changeTravelStatus()}
+            />
+          )}
+        />
+        <List.Item
+          style={styles.item}
+          title="Edit profile"
+          onPress={() => navigation.navigate('ProfileEdit')}
+          left={() => (
+            <List.Icon style={styles.icon} icon="account-edit" />
+          )}
+        />
         <List.Item
           style={styles.item}
           title="Log out"
