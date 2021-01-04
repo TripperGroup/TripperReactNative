@@ -35,6 +35,15 @@ export const StateContext = createContext();
 export const ThemeContext = createContext();
 
 const App = ({ navigation }) => {
+  const linking = {
+    prefixes: ['https://trippergroup.ir', 'tripper://'],
+    config: {
+      screens: {
+        Trips: 'app',
+      },
+    },
+  };
+
   const [state, dispatch] = useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -315,7 +324,7 @@ const App = ({ navigation }) => {
             value={[isDarkTheme, setIsDarkTheme]}
           >
             <PaperProvider theme={theme}>
-              <NavigationContainer theme={theme}>
+              <NavigationContainer linking={linking} theme={theme}>
                 {state.userToken == null && !state.isGuest ? (
                   <AuthNavigations />
                 ) : (

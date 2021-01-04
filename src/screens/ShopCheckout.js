@@ -28,7 +28,7 @@ export default function ShopCheckout({ navigation }) {
   );
   const { cart } = useContext(ShopStateContext);
 
-  async function handleCheckoutSubmit(userInfo) {
+  function handleCheckoutSubmit(userInfo) {
     setLoading(true);
 
     const order = {
@@ -38,21 +38,26 @@ export default function ShopCheckout({ navigation }) {
         product_id: item.id,
         quantity: 1,
       })),
+      payment_method: 'bacs',
+      payment_method_title: 'Direct Bank Transfer',
     };
-    await ShopApi.post('/orders', order)
+    ShopApi.post('orders', order)
       .then((data) => {
         setLoading(false);
         orderData = data;
+        console.log(data);
+        pay(data);
       })
       .catch((error) => {
         setLoading(false);
         setError(JSON.stringify(error));
       });
-    console.log(orderData);
+  }
+
+  function pay(data) {
     const paymentUrl =
       `${wordpressBaseUrl}/checkout/order-pay/${data.id}` +
       `?pay_for_order=true&key=${data.order_key}`;
-
     return Linking.openURL(paymentUrl);
   }
 

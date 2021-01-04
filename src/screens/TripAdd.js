@@ -69,14 +69,16 @@ const TripAdd = ({ navigation }) => {
 
     var formData = new FormData();
 
-    formData.append('image', {
-      uri:
-        Platform.OS === 'android'
-          ? tripImage
-          : tripImage.replace('file://', ''),
-      name: `dummy${Date.now()}.jpg`,
-      type: 'image/*',
-    });
+    tripImage != ''
+      ? formData.append('image', {
+          uri:
+            Platform.OS === 'android'
+              ? tripImage
+              : tripImage.replace('file://', ''),
+          name: `dummy${Date.now()}.jpg`,
+          type: 'image/*',
+        })
+      : null;
     tripJson != ''
       ? formData.append('geo_json', {
           uri:
@@ -87,9 +89,15 @@ const TripAdd = ({ navigation }) => {
           type: '*/*',
         })
       : null;
+
     formData.append('auther', values.auther);
-    formData.append('start_date', values.start_date);
-    formData.append('end_date', values.end_date);
+    values.start_date != ''
+      ? formData.append('start_date', values.start_date)
+      : null;
+    values.end_date != ''
+      ? formData.append('end_date', values.end_date)
+      : null;
+
     formData.append('subject', values.subject);
     formData.append('description', values.description);
     formData.append('category', values.category);
@@ -112,7 +120,7 @@ const TripAdd = ({ navigation }) => {
       })
       .catch(function (error) {
         setLoading(false);
-        if (error.response.data) {
+        if (error.response.data != null) {
           setError(JSON.stringify(error.response.data, null, 2));
         } else {
           setError('error');
@@ -148,6 +156,8 @@ const TripAdd = ({ navigation }) => {
       storageOptions: {
         skipBackup: true,
       },
+      maxHeight: 300,
+      maxWidth: 300,
     };
 
     let source;
@@ -172,10 +182,10 @@ const TripAdd = ({ navigation }) => {
 
   const onSelectedActivitiesChange = (selectedItems) => {
     setTripActivities(selectedItems);
-    // console.log(JSON.stringify(tripActivities));
+    console.log(JSON.stringify(tripActivities));
   };
 
-  useEffect(() => {}, [tripImage]);
+  useEffect(() => {}, []);
 
   return (
     <PaperProvider theme={theme}>
@@ -204,19 +214,25 @@ const TripAdd = ({ navigation }) => {
             setFieldValue,
           }) => (
             <ScrollView>
-              {/* <Picker
-                selectedValue={values.category}
-                style={{ height: 50, width: '100%' }}
-                onValueChange={(itemValue, itemIndex) => {
-                  setFieldValue('category', itemValue);
-                }}
-              >
-                {Object.entries(tripCategories).map(
-                  ([key, value]) => (
-                    <Picker.Item label={value} value={key} />
-                  ),
-                )}
-              </Picker> */}
+              <View style={{ height: 200 }}>
+                <Picker
+                  selectedValue={values.category}
+                  style={{ height: 50, width: '100%' }}
+                  onValueChange={(itemValue, itemIndex) => {
+                    setFieldValue('category', itemValue);
+                  }}
+                >
+                  {Object.entries(tripCategories).map(
+                    ([key, value]) => (
+                      <Picker.Item
+                        key={key}
+                        label={value}
+                        value={key}
+                      />
+                    ),
+                  )}
+                </Picker>
+              </View>
               <TextInput
                 label="Trip Subject"
                 placeholder="ex: Khalkhal to Asalem Hiking"
