@@ -102,7 +102,7 @@ const RighContent = (props) => {
         console.log('unliked');
       })
       .catch(function (error) {
-        setLike(true);
+        //setLike(true);
         console.log(error);
       });
   }
@@ -150,11 +150,11 @@ const RighContent = (props) => {
           name={like ? 'heart' : 'heart-outline'}
         />
       </TouchableOpacity>
-      <MaterialIcon
+      {/* <MaterialIcon
         style={{ marginLeft: 5, opacity: 0.5 }}
         size={25}
         name="dots-vertical"
-      />
+      /> */}
     </View>
   );
 };
@@ -178,24 +178,33 @@ const TripCard = (props) => {
         elevation: 1,
       }}
     >
-      <Card.Title
-        title={props.subject}
-        subtitle={
-          props.auther +
-          (props.days != null
-            ? ' • ' +
-              (props.days > 1
-                ? props.days + ' days'
-                : props.days == 0
-                ? 'Less than a day'
-                : 'a day')
-            : '') +
-          ' • ' +
-          tripCategories[props.category]
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('OthersProfile', {
+            name: props.data.auther.username,
+            id: props.data.auther.id,
+          })
         }
-        left={() => LeftContent(props.avatar, props.gender)}
-        right={() => <RighContent trip={props.data.id} />}
-      />
+      >
+        <Card.Title
+          title={props.subject}
+          subtitle={
+            props.auther +
+            (props.days != null
+              ? ' • ' +
+                (props.days > 1
+                  ? props.days + ' days'
+                  : props.days == 0
+                  ? 'Less than a day'
+                  : 'a day')
+              : '') +
+            ' • ' +
+            tripCategories[props.category]
+          }
+          left={() => LeftContent(props.avatar, props.gender)}
+          right={() => <RighContent trip={props.data.id} />}
+        />
+      </TouchableOpacity>
       <Card.Cover
         source={
           props.picture != null
@@ -221,10 +230,12 @@ const TripCard = (props) => {
             />
           ))}
         </View>
+        {props.description != null ? (
+          <Paragraph>
+            {props.description.substring(0, 100)}...
+          </Paragraph>
+        ) : null}
 
-        <Paragraph>
-          {props.description.substring(0, 100)}...
-        </Paragraph>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('TripDetail', {

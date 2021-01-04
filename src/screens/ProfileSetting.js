@@ -87,6 +87,9 @@ export default function ProfileSetting({ navigation }, props) {
         <List.Item
           style={styles.item}
           title="Change Trip Status"
+          description={
+            inTravel ? 'You are traveling' : 'You are not traveling'
+          }
           left={() => (
             <List.Icon style={styles.icon} icon="wallet-travel" />
           )}

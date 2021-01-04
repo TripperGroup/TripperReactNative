@@ -111,7 +111,7 @@ export default function Map() {
                   })
                 }
               >
-                <MapboxGL.SymbolLayer
+                {/* <MapboxGL.SymbolLayer
                   id={item.id.toString() + 'text'}
                   style={{
                     textField: item.subject,
@@ -120,7 +120,7 @@ export default function Map() {
                     textHaloWidth: 1,
                     textSize: 25,
                   }}
-                />
+                /> */}
                 <MapboxGL.SymbolLayer
                   id={item.id + 'icon'}
                   style={styles1.icon}

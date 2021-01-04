@@ -13,6 +13,7 @@ import Map from '../screens/Map';
 import TripDetail from '../screens/TripDetails';
 import TripAdd from '../screens/TripAdd';
 import TripAddTrack from '../screens/TripAddTrack';
+import OthersProfile from '../screens/OthersProfile';
 
 import SearchHeader from 'react-native-search-header';
 import { useNavigation } from '@react-navigation/native';
@@ -156,6 +157,14 @@ export default TripStack = () => {
           name="Map"
           component={Map}
           options={{ headerTitle: 'Map' }}
+        />
+        <Stack.Screen
+          name="OthersProfile"
+          component={OthersProfile}
+          options={({ route }) => ({
+            title: route.params.name,
+            id: route.params.id,
+          })}
         />
       </Stack.Navigator>
       <Portal>
